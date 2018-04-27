@@ -36,7 +36,7 @@ public class ProductCategoryFile implements IProductCategory {
 	}
 
 	@Override
-	public boolean delete(ProductCategory model) {
+	public boolean softDelete(ProductCategory model) {
 		// TODO Auto-generated method stub
 		return false;
 	}

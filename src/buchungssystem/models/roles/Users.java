@@ -35,7 +35,7 @@ public class Users {
 
 	//Mitarbeiter-Liste von einer csv-Datei in die DB importieren.
 	public boolean importEmployeesToDB(String file) {
-		boolean status = true;
+		boolean status = false;
 		List <Employee> employees = new ArrayList<Employee>();
 		
 		//Erstellung eines neues Objektes der Class EmployeeFile(DaoImpl) 
@@ -55,12 +55,31 @@ public class Users {
 	
 	public boolean addRoleToDB(String role) {
 		boolean status = false;
-		UserRole userRoleobj = new UserRole(role);
+		UserRole userRoleObj = new UserRole(role);
 		UserRoleDB userRoleDB = new UserRoleDB();
-		status = userRoleDB.add(userRoleobj);
+		status = userRoleDB.add(userRoleObj);
 		return status;
 	}
 	
+	public boolean updateEmployee(Long EmployeeID) {
+		boolean status = false;
+		EmployeeDB employeeDB = new EmployeeDB();
+		Employee employeeObj = employeeDB.getById(EmployeeID);
+		System.out.println(employeeObj.toString());
+		
+		//disable this employee
+		employeeDB.softDelete(employeeObj);	
+		//employeeDB = new EmployeeDB();
+		
+		//copy this employee into next row with updated attributes
+		System.out.println(employeeObj.toString());
+		status = employeeDB.add(employeeObj);
+		
+		return status;
+	}
+	
+	
+	//getter&setter
 	public String getLogin() {
 		return login;
 	}

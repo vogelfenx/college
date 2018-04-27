@@ -32,7 +32,7 @@ public class PermissionDB implements IPermission {
 	}
 
 	@Override
-	public boolean delete(Permission model) {
+	public boolean softDelete(Permission model) {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -32,7 +32,7 @@ public class WarehouseDB implements IWarehouse {
 	}
 
 	@Override
-	public boolean delete(Model model) {
+	public boolean softDelete(Model model) {
 		// TODO Auto-generated method stub
 		return false;
 	}

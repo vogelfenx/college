@@ -59,6 +59,12 @@ public class UserRoleDB implements IUserRole {
 	}
 
 	@Override
+	public boolean softDelete(UserRole model) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
 	public boolean delete(UserRole model) {
 		// TODO Auto-generated method stub
 		return false;

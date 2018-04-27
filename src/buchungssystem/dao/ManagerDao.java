@@ -23,6 +23,9 @@ public interface ManagerDao<Type extends Model> {
 	
 	public boolean update(Type model);
 	
+	public boolean softDelete(Type model);
+	
+	//delete permanently 
 	public boolean delete(Type model);
 	
 }

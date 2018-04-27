@@ -83,7 +83,7 @@ public class EmployeeFile implements IEmployeeDao{
 	}
 
 	@Override
-	public boolean delete(Employee model) {
+	public boolean softDelete(Employee model) {
 		// TODO Auto-generated method stub
 		return false;
 	}

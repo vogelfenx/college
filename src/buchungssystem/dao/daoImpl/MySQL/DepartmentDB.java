@@ -32,7 +32,7 @@ public class DepartmentDB implements IDepartment {
 	}
 
 	@Override
-	public boolean delete(Department model) {
+	public boolean softDelete(Department model) {
 		// TODO Auto-generated method stub
 		return false;
 	}

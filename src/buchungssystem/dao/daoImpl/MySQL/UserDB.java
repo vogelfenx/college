@@ -42,7 +42,7 @@ public class UserDB implements IUser{
 	}
 
 	@Override
-	public boolean delete(User model) {
+	public boolean softDelete(User model) {
 		// TODO Auto-generated method stub
 		return false;
 	}

@@ -26,7 +26,8 @@ public class login {
 		Admin admin = session.getAdmin();
 		if (session.getPermissions().getProperty("addUser") == "true") {
 			//status = admin.addEmployeeToDB("Zenja", "mvanov", "zm@gmail.com");
-			status = admin.addRoleToDB("Sachbearbeiter");
+			//status = admin.addRoleToDB("Sachbearbeiter");
+			status = admin.updateEmployee(((long)52));
 		}
 		System.out.println(status);
 	}
