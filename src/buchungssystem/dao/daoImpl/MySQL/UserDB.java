@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import buchungssystem.dao.IUser;
-import buchungssystem.models.User;
+import buchungssystem.models.application.User;
 
 public class UserDB implements IUser{
 	

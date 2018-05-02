@@ -4,13 +4,13 @@ import java.util.Properties;
 
 import buchungssystem.dao.daoImpl.MySQL.EmployeeDB;
 import buchungssystem.dao.daoImpl.MySQL.UserDB;
-import buchungssystem.models.Employee;
-import buchungssystem.models.User;
-import buchungssystem.models.roles.Admin;
+import buchungssystem.models.application.User;
+import buchungssystem.models.employee.Employee;
+import buchungssystem.models.roles.CurrentUser;
 
 public class Authorization {
 	Properties permissions = new Properties();
-	Admin admin;
+	CurrentUser currentUser;
 	
 	public Authorization(String login, String passwd) {
 		UserDB userDB = new UserDB();
@@ -31,8 +31,8 @@ public class Authorization {
 	private Properties initializePermission(String role){
 		switch (role) {
 			case "Admin":
-				admin = new Admin(); 
-				permissions = admin.definePermissionsProperty();
+				currentUser = new CurrentUser(); 
+				permissions = currentUser.definePermissionsProperty();
 			break;
 		}
 		return permissions;
@@ -46,12 +46,12 @@ public class Authorization {
 		this.permissions = permissions;
 	}
 
-	public Admin getAdmin() {
-		return admin;
+	public CurrentUser getCurrentUser() {
+		return currentUser;
 	}
 
-	public void setAdmin(Admin admin) {
-		this.admin = admin;
+	public void setCurrentUser(CurrentUser admin) {
+		this.currentUser = admin;
 	}
 	
 	

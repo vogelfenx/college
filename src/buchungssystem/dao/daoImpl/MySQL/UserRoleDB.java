@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import buchungssystem.dao.IUserRole;
-import buchungssystem.models.UserRole;
+import buchungssystem.models.application.UserRole;
 
 public class UserRoleDB implements IUserRole {
 	

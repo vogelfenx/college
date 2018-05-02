@@ -2,7 +2,7 @@ package buchungssystem.dao;
 
 import java.util.List;
 
-import buchungssystem.models.Employee;
+import buchungssystem.models.employee.Employee;
 
 /*
  * Hier wird die Funktionalität deklariert, die sich nur auf dieses Inferface bezieht 

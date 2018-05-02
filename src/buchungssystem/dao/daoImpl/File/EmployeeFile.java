@@ -6,7 +6,7 @@ import java.util.List;
 
 import buchungssystem.dao.IEmployeeDao;
 import buchungssystem.dao.daoImpl.MySQL.DBconnection;
-import buchungssystem.models.Employee;
+import buchungssystem.models.employee.Employee;
 
 public class EmployeeFile implements IEmployeeDao{
 	

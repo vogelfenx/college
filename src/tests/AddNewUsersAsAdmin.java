@@ -4,11 +4,11 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import buchungssystem.models.roles.Admin;
+import buchungssystem.models.roles.CurrentUser;
 
 public class AddNewUsersAsAdmin {
 	
-	Admin admin = new Admin();	
+	CurrentUser admin = new CurrentUser();	
 	
 	@Test
 	public void newEntry(){

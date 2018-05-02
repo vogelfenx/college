@@ -1,7 +1,7 @@
 package tests;
 
 import buchungssystem.dao.daoImpl.MySQL.UserDB;
-import buchungssystem.models.User;
+import buchungssystem.models.application.User;
 
 public class test {
 

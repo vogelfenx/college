@@ -3,7 +3,7 @@ package buchungssystem.dao.daoImpl.File;
 import java.util.List;
 
 import buchungssystem.dao.IProductCategory;
-import buchungssystem.models.ProductCategory;
+import buchungssystem.models.product.ProductCategory;
 
 public class ProductCategoryFile implements IProductCategory {
 	

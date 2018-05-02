@@ -3,7 +3,7 @@ package buchungssystem.dao.daoImpl.MySQL;
 import java.util.List;
 
 import buchungssystem.dao.IPermission;
-import buchungssystem.models.Permission;
+import buchungssystem.models.application.Permission;
 
 public class PermissionDB implements IPermission {
 
@@ -33,6 +33,12 @@ public class PermissionDB implements IPermission {
 
 	@Override
 	public boolean softDelete(Permission model) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean delete(Permission model) {
 		// TODO Auto-generated method stub
 		return false;
 	}

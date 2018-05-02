@@ -1,6 +1,6 @@
 package buchungssystem.dao;
 
-import buchungssystem.models.Role;
+import buchungssystem.models.employee.Role;
 
 /*
  * Hier wird die Funktionalität deklariert, die sich nur auf dieses Inferface bezieht 

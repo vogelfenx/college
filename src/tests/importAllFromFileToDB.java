@@ -1,11 +1,11 @@
 package tests;
 
-import buchungssystem.models.roles.Admin;
+import buchungssystem.models.roles.CurrentUser;
 
 public class importAllFromFileToDB {
 
 	public static void main(String[] args) {
-		Admin admin = new Admin("Kirill");
+		CurrentUser admin = new CurrentUser("Kirill");
 		admin.importEmployeesToDB("data/test");
 	}
 

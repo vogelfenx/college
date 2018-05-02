@@ -3,7 +3,7 @@ package buchungssystem.dao.daoImpl.MySQL;
 import java.util.List;
 
 import buchungssystem.dao.IDepartment;
-import buchungssystem.models.Department;
+import buchungssystem.models.product.Department;
 
 public class DepartmentDB implements IDepartment {
 

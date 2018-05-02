@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import buchungssystem.dao.IEmployeeDao;
-import buchungssystem.models.Employee;
+import buchungssystem.models.employee.Employee;
 
 public class EmployeeDB implements IEmployeeDao{
 
@@ -112,8 +112,9 @@ public class EmployeeDB implements IEmployeeDao{
 				+ "firstName, "
 				+ "lastName, "
 				+ "firmaEmail, "
-				+ "phoneNumber) "
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?)";
+				+ "phoneNumber, "
+				+ "pastID) "
+				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement sqlStmt;
 		
 		try {
@@ -148,6 +149,8 @@ public class EmployeeDB implements IEmployeeDao{
 			} else {
 				sqlStmt.setString(7, null);
 			}
+			
+			sqlStmt.setInt(8, model.getPastID().intValue());
 
 			sqlStmt.executeUpdate();
 			status = true;

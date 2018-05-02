@@ -3,7 +3,7 @@ package buchungssystem.dao.daoImpl.File;
 import java.util.List;
 
 import buchungssystem.dao.IDepartment;
-import buchungssystem.models.Department;
+import buchungssystem.models.product.Department;
 
 public class DepartmentFile implements IDepartment {
 

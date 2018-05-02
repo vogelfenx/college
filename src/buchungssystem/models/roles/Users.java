@@ -5,9 +5,13 @@ import java.util.List;
 
 import buchungssystem.dao.daoImpl.File.EmployeeFile;
 import buchungssystem.dao.daoImpl.MySQL.EmployeeDB;
+import buchungssystem.dao.daoImpl.MySQL.PermissionDB;
 import buchungssystem.dao.daoImpl.MySQL.UserRoleDB;
-import buchungssystem.models.Employee;
-import buchungssystem.models.UserRole;
+import buchungssystem.dao.daoImpl.MySQL.UserRoleHasPermissionDB;
+import buchungssystem.models.application.Permission;
+import buchungssystem.models.application.UserRole;
+import buchungssystem.models.application.UserRoleHasPermission;
+import buchungssystem.models.employee.Employee;
 
 public class Users {
 	private String login;
@@ -61,15 +65,24 @@ public class Users {
 		return status;
 	}
 	
-	public boolean updateEmployee(Long EmployeeID) {
+	public boolean updateEmployee(Long EmployeeID, Employee updatedEmployee) {
 		boolean status = false;
 		EmployeeDB employeeDB = new EmployeeDB();
 		Employee employeeObj = employeeDB.getById(EmployeeID);
 		System.out.println(employeeObj.toString());
 		
 		//disable this employee
-		employeeDB.softDelete(employeeObj);	
-		//employeeDB = new EmployeeDB();
+		employeeDB.softDelete(employeeObj);
+		
+		//update the employee object = set new attributes to employee obj
+		employeeObj.setDepartmentID(updatedEmployee.getDepartmentID());
+		employeeObj.setRoleID(updatedEmployee.getRoleID());
+		employeeObj.setUserID(updatedEmployee.getRoleID());
+		employeeObj.setFirstName(updatedEmployee.getFirstName());
+		employeeObj.setLastName(updatedEmployee.getLastName());
+		employeeObj.setEmail(updatedEmployee.getEmail());
+		employeeObj.setPhoneNumber(updatedEmployee.getPhoneNumber());
+		employeeObj.setPastID(employeeObj.getId());
 		
 		//copy this employee into next row with updated attributes
 		System.out.println(employeeObj.toString());
@@ -78,6 +91,15 @@ public class Users {
 		return status;
 	}
 	
+	public boolean configureUserRolePermissions(UserRoleHasPermission userRolePermission) {
+		boolean status = false;
+		
+		UserRoleHasPermissionDB userRolePermissionDB = new UserRoleHasPermissionDB();
+		
+		status = userRolePermissionDB.add(userRolePermission);
+		
+		return status;
+	}
 	
 	//getter&setter
 	public String getLogin() {
