@@ -3,11 +3,11 @@ package buchungssystem.models.roles;
 import java.util.ArrayList;
 import java.util.List;
 
-import buchungssystem.dao.daoImpl.File.EmployeeFile;
-import buchungssystem.dao.daoImpl.MySQL.EmployeeDB;
-import buchungssystem.dao.daoImpl.MySQL.PermissionDB;
-import buchungssystem.dao.daoImpl.MySQL.UserRoleDB;
-import buchungssystem.dao.daoImpl.MySQL.UserRoleHasPermissionDB;
+import buchungssystem.dao.Impl.File.employee.EmployeeFile;
+import buchungssystem.dao.Impl.MySQL.application.PermissionDB;
+import buchungssystem.dao.Impl.MySQL.application.UserRoleDB;
+import buchungssystem.dao.Impl.MySQL.application.UserRoleHasPermissionDB;
+import buchungssystem.dao.Impl.MySQL.employee.EmployeeDB;
 import buchungssystem.models.application.Permission;
 import buchungssystem.models.application.UserRole;
 import buchungssystem.models.application.UserRoleHasPermission;

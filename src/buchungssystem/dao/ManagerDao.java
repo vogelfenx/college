@@ -2,7 +2,7 @@ package buchungssystem.dao;
 
 import java.util.List;
 
-import buchungssystem.dao.daoImpl.MySQL.DBconnection;
+import buchungssystem.dao.Impl.MySQL.DBconnection;
 import buchungssystem.models.Model;
 
 /*

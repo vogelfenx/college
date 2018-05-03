@@ -1,6 +1,6 @@
 package buchungssystem.models.employee;
 
-import buchungssystem.dao.IRole;
+import buchungssystem.dao.employee.IRole;
 
 public enum Role extends Model {
 	Administrator,

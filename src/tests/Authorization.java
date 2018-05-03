@@ -2,8 +2,8 @@ package tests;
 
 import java.util.Properties;
 
-import buchungssystem.dao.daoImpl.MySQL.EmployeeDB;
-import buchungssystem.dao.daoImpl.MySQL.UserDB;
+import buchungssystem.dao.Impl.MySQL.application.UserDB;
+import buchungssystem.dao.Impl.MySQL.employee.EmployeeDB;
 import buchungssystem.models.application.User;
 import buchungssystem.models.employee.Employee;
 import buchungssystem.models.roles.CurrentUser;
