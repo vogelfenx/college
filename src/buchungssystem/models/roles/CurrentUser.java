@@ -23,5 +23,4 @@ public class CurrentUser extends Users {
 		return permissions;
 	}
 	
-	
 }

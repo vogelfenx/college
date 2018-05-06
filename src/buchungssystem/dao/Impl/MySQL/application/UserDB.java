@@ -32,8 +32,39 @@ public class UserDB implements IUser{
 
 	@Override
 	public boolean add(User model) {
-		// TODO adding a new user 
-		return false;
+		// DONE adding a new user
+		
+		boolean status = false;
+		
+		//initialize connection
+		Connection mysqlConnect = conn.init();
+		
+		String sqlQuery = "INSERT INTO User ("
+				+ "userRoleID, "
+				+ "login, "
+				+ "passw) "
+				+ "VALUES (?,?,md5(?))";
+		
+		PreparedStatement sqlStmt;
+		
+		try {
+			sqlStmt = mysqlConnect.prepareStatement(sqlQuery);
+			
+			sqlStmt.setLong(1, model.getUserRoleID());
+			sqlStmt.setString(2, model.getLogin());
+			sqlStmt.setString(3, model.getPassword());
+			sqlStmt.executeUpdate();
+			status = true;
+			
+		} catch (SQLException e) {
+			status = false;
+			e.printStackTrace();
+		}
+		
+		//close connection
+		conn.finalize();
+		
+		return status;
 	}
 
 	@Override
@@ -68,17 +99,25 @@ public class UserDB implements IUser{
 			isExists = sqlStmt.executeQuery();
 			isExists.next();
 			if (isExists.getBoolean(1) == true){
-				//sqlQuery = "select userID, employeeID from user natural join employee where login = ?";
-				sqlQuery = "select user.userID, employeeID from user join employee on employee.userID = user.userID where login = ?";
+				sqlQuery = "select user.userID, employeeID, user.userRoleID from user join employee on employee.userID = user.userID where login = ?";
 				sqlStmt = mysqlConnect.prepareStatement(sqlQuery);
 				sqlStmt.setString(1, login);
 				isExists = sqlStmt.executeQuery();
 				isExists.next();
-				Long userID = isExists.getLong(1);
-				Long employeeID = isExists.getLong(2);
+				
+				isExists.getLong(1);
+				Long userID = isExists.wasNull() ? null : isExists.getLong(1);
+				
+				isExists.getLong(2);
+				Long employeeID = isExists.wasNull() ? null : isExists.getLong(2);
+				
+				isExists.getLong(3);
+				Long userRoleID = isExists.wasNull() ? null : isExists.getLong(3);
+				
 				currentUser = new User(userID);
 				currentUser.setEmployeeID(employeeID);
 				currentUser.setLogin(login);
+				currentUser.setUserRoleID(userRoleID);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

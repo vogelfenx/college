@@ -4,14 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import buchungssystem.dao.Impl.File.employee.EmployeeFile;
-import buchungssystem.dao.Impl.MySQL.application.PermissionDB;
+import buchungssystem.dao.Impl.MySQL.application.UserDB;
 import buchungssystem.dao.Impl.MySQL.application.UserRoleDB;
 import buchungssystem.dao.Impl.MySQL.application.UserRoleHasPermissionDB;
 import buchungssystem.dao.Impl.MySQL.employee.EmployeeDB;
-import buchungssystem.models.application.Permission;
+import buchungssystem.dao.Impl.MySQL.employee.RoleDB;
+import buchungssystem.models.application.User;
 import buchungssystem.models.application.UserRole;
 import buchungssystem.models.application.UserRoleHasPermission;
 import buchungssystem.models.employee.Employee;
+import buchungssystem.models.employee.Role;
 
 public class Users {
 	private String login;
@@ -82,7 +84,7 @@ public class Users {
 		employeeObj.setLastName(updatedEmployee.getLastName());
 		employeeObj.setEmail(updatedEmployee.getEmail());
 		employeeObj.setPhoneNumber(updatedEmployee.getPhoneNumber());
-		employeeObj.setPastID(employeeObj.getId());
+		employeeObj.setLastID(employeeObj.getId());
 		
 		//copy this employee into next row with updated attributes
 		System.out.println(employeeObj.toString());
@@ -99,6 +101,40 @@ public class Users {
 		status = userRolePermissionDB.add(userRolePermission);
 		
 		return status;
+	}
+	
+	public boolean addEmployeeRole(Role role) {
+		boolean status = false;
+		
+		RoleDB roleDB = new RoleDB();
+		
+		status = roleDB.add(role);
+		
+		return status;
+	}
+	
+	public boolean addUser(User newUser) {
+		boolean status = false;
+		
+		UserDB userDB = new UserDB();
+		
+		status = userDB.add(newUser);
+		
+		return status;
+	}
+	
+	public boolean adaptUserToEmployee(Long userID, Long employeeID) {
+		boolean status = false;
+		
+		EmployeeDB employeeDB = new EmployeeDB();
+		
+		Employee employee = employeeDB.getById(employeeID);
+		
+		employee.setUserID(userID);
+		
+		status = employeeDB.update(employee);
+		
+		return status;	
 	}
 	
 	//getter&setter

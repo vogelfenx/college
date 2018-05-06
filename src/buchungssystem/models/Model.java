@@ -7,6 +7,8 @@ package buchungssystem.models;
 public class Model {
 	
 	private Long id;
+	//DONE implement lastID properties in case of modifying the object in DB
+	private Long lastID;
 	
 	public Model() {
 		
@@ -22,5 +24,15 @@ public class Model {
 	public void setId(Long id) {
 		this.id = id;
 	}
+
+	public Long getLastID() {
+		return lastID;
+	}
+
+	public void setLastID(Long lastID) {
+		this.lastID = lastID;
+	}
+	
+	
 
 }

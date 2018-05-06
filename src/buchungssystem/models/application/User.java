@@ -8,12 +8,15 @@ public class User extends Model {
 	 * Folgende Eigenschaften übernimmt Model.java
 	 * 
 	 * private Long id; 
+	 * private Long lastID;
 	 * 
 	 */
 	
+	private Long userRoleID;
 	private String login;
 	private String password;
-	private long employeeID;
+	private Long employeeID;
+	// TODO private validFrom;
 	
 	public User() {
 		super();
@@ -22,9 +25,13 @@ public class User extends Model {
 	public User(Long id) {
 		super(id);
 	}
-	
-	public User(String login) {
-		this.login = login;
+
+	public Long getUserRoleID() {
+		return userRoleID;
+	}
+
+	public void setUserRoleID(Long userRoleID) {
+		this.userRoleID = userRoleID;
 	}
 
 	public String getLogin() {
@@ -43,20 +50,19 @@ public class User extends Model {
 		this.password = password;
 	}
 
-	public long getEmployeeID() {
+	public Long getEmployeeID() {
 		return employeeID;
 	}
 
-	public void setEmployeeID(long employeeID) {
+	public void setEmployeeID(Long employeeID) {
 		this.employeeID = employeeID;
 	}
 
 	@Override
 	public String toString() {
-		return "User [login=" + login + ", password=" + password + ", employeeID=" + employeeID + "]";
+		return "User [userRoleID=" + userRoleID + ", login=" + login + ", password=" + password + ", employeeID="
+				+ employeeID + "]";
 	}
-	
-	
 	
 	
 	

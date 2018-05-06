@@ -41,10 +41,9 @@ public class EmployeeFile implements IEmployeeDao{
 			}
 			dataIn.close();
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
+			// TODO FileNotFoundException
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -60,6 +59,8 @@ public class EmployeeFile implements IEmployeeDao{
 
 	@Override
 	public boolean add(Employee model) {
+		//TODO exporting all employees from DB to a csv-file 
+		boolean status = false;
 		File file = new File("data/"+model.getLastName()+" "+model.getFirstName());
 		try {
 			file.createNewFile();
@@ -67,12 +68,12 @@ public class EmployeeFile implements IEmployeeDao{
 			fw.write("test");
 			fw.flush();
 			fw.close();
-			return true;
+			status = true;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			status = false;
 			e.printStackTrace();
-			return false;
 		}
+		return status;
 	}
 
 	@Override

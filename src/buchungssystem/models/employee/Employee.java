@@ -3,11 +3,13 @@ package buchungssystem.models.employee;
 import buchungssystem.models.Model;
 
 public class Employee extends Model {
+	//TODO all employees should have roleID!!
 	
 	/* 
 	 * Folgende Eigenschaften übernimmt Model.java
 	 * 
 	 * private Long id; 
+	 * private Long lastID;
 	 * 
 	 */
 	
@@ -20,7 +22,6 @@ public class Employee extends Model {
 	private Long userID;
 	private Long departmentID;
 	private boolean isValid;
-	private Long pastID;
 	
 	public Employee(String firstName, String lastName, String email) {
 		super();
@@ -88,17 +89,11 @@ public class Employee extends Model {
 	public void setValid(boolean isValid) {
 		this.isValid = isValid;
 	}
-	public Long getPastID() {
-		return pastID;
-	}
-	public void setPastID(Long lastID) {
-		this.pastID = lastID;
-	}
 	@Override
 	public String toString() {
 		return "Employee [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber="
 				+ phoneNumber + ", roleID=" + roleID + ", role=" + role + ", userID=" + userID + ", departmentID="
-				+ departmentID + ", isValid=" + isValid + ", pastID=" + pastID + "]";
+				+ departmentID + ", isValid=" + isValid + "]";
 	}
 	
 	

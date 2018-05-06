@@ -1,15 +1,21 @@
 package buchungssystem.models.employee;
 
-import buchungssystem.dao.employee.IRole;
+import buchungssystem.models.Model;
 
-public enum Role extends Model {
-	Administrator,
-	Manager,
-	Sachbearbeiter;
-	
-	/*
-	 * folgende Methode ist zu benutzen, um alle Enums zurückzukliefern 
-	 * public static EnumClass[] values(){return arrays}
-	 */
+public class Role extends Model {
+	private String role;
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	@Override
+	public String toString() {
+		return "Role [role=" + role + "]";
+	}
 	
 }

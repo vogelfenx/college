@@ -48,7 +48,6 @@ public class DBconnection {
 			mysqlConnect.close();
 			mysqlConnect = null;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

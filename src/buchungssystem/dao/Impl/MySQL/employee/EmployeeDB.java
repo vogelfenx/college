@@ -114,7 +114,7 @@ public class EmployeeDB implements IEmployeeDao{
 				+ "lastName, "
 				+ "firmaEmail, "
 				+ "phoneNumber, "
-				+ "pastID) "
+				+ "lastID) "
 				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 		PreparedStatement sqlStmt;
 		
@@ -151,7 +151,7 @@ public class EmployeeDB implements IEmployeeDao{
 				sqlStmt.setString(7, null);
 			}
 			
-			sqlStmt.setInt(8, model.getPastID().intValue());
+			sqlStmt.setInt(8, model.getLastID().intValue());
 
 			sqlStmt.executeUpdate();
 			status = true;
@@ -168,12 +168,82 @@ public class EmployeeDB implements IEmployeeDao{
 
 	@Override
 	public boolean update(Employee model) {
-		//boolean status;
-		
+		boolean status = false;
 		//initialize connection
-		//Connection mysqlConnect = conn.init();
+		Connection mysqlConnect = conn.init();
 		
-		return false;
+		String sqlQuery = "UPDATE Employee SET "
+				+ "departmentID = ?, "
+				+ "roleID = ?, "
+				+ "userID = ?, "
+				+ "firstName = ?, "
+				+ "lastName = ?, "
+				+ "firmaEmail = ?, "
+				+ "phoneNumber = ?, "
+				+ "validTill = null "
+				+ "WHERE employeeID = ?";
+		try {
+			PreparedStatement sqlStmt = mysqlConnect.prepareStatement(sqlQuery);
+			
+			if (model.getDepartmentID() != null) {
+				sqlStmt.setInt(1, model.getDepartmentID().intValue());
+			} else {
+				sqlStmt.setString(1, null);
+			}
+			
+			if (model.getRoleID() != null) {
+				sqlStmt.setInt(2, model.getRoleID().intValue());
+			} else {
+				sqlStmt.setString(2, null);
+			}
+			
+			if (model.getUserID() != null) {
+				sqlStmt.setInt(3, model.getUserID().intValue());
+			} else {
+				sqlStmt.setString(3, null);
+			}
+			
+			if (model.getFirstName() != null) {
+				sqlStmt.setString(4, model.getFirstName());
+			} else {
+				sqlStmt.setString(4, null);
+			}
+			
+			if (model.getLastName() != null) {
+				sqlStmt.setString(5, model.getLastName());
+			} else {
+				sqlStmt.setString(5, null);
+			}
+			
+			if (model.getEmail() != null) {
+				sqlStmt.setString(6, model.getEmail());
+			} else {
+				sqlStmt.setString(6, null);
+			}
+			
+			if (model.getPhoneNumber() != null) {
+				sqlStmt.setString(7, model.getPhoneNumber());
+			} else {
+				sqlStmt.setString(7, null);
+			}
+			
+			if (model.getId() != null) {
+				sqlStmt.setInt(8, model.getId().intValue());
+			} else {
+				sqlStmt.setString(8, null);
+			}
+			
+			sqlStmt.executeUpdate();
+			
+			status = true;
+		} catch (SQLException e) {
+			status = false;
+			e.printStackTrace();
+		}
+		
+		
+		
+		return status;
 	}
 
 	//update isValid status to false (= 0 = disabled)
