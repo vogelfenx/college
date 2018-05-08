@@ -1,9 +1,12 @@
 package buchungssystem.dao.Impl.MySQL.application;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import buchungssystem.dao.Impl.MySQL.DBconnection;
@@ -20,8 +23,55 @@ public class UserDB implements IUser{
 
 	@Override
 	public List<User> getAll() {
-		// TODO view of all users in the system
-		return null;
+		// DONE implementation of a view of all users in the system
+		
+		Connection mysqlConnect = conn.init();
+		
+		List<User> users = new ArrayList<User>();
+		
+		ResultSet resultSet = null;
+		
+		String sqlQuery = "SELECT userID,"
+				+ "userRoleID,"
+				+ "login,"
+				+ "validFrom "
+				+ "FROM User";
+		
+		try {
+			PreparedStatement sqlStmt = mysqlConnect.prepareStatement(sqlQuery);
+			resultSet = sqlStmt.executeQuery();
+			while (resultSet.next()) {
+				Long userID = resultSet.getLong(1);
+				
+				resultSet.getLong(2);
+				Long roleID = resultSet.wasNull() ? null : resultSet.getLong(2);
+				
+				resultSet.getString(3);
+				String login = resultSet.wasNull() ? null : resultSet.getString(3);
+				
+				resultSet.getDate(4);
+				Date validFrom = resultSet.wasNull() ? null : resultSet.getDate(4);
+				GregorianCalendar creatingDate = new GregorianCalendar();
+				creatingDate.setTime(validFrom);
+				
+				
+				User user = new User(userID);
+				
+				user.setUserRoleID(roleID);
+				user.setLogin(login);
+				user.setValidFrom(creatingDate);
+				
+				users.add(user);
+				
+			}
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return users;
 	}
 
 	@Override

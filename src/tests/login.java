@@ -61,6 +61,9 @@ public class login {
 			
 			//adapt user obj to employee obj
 //			status = currentUser.adaptUserToEmployee((long)8, (long)60);			
+			
+			//get a view of all users in system
+			status = currentUser.getAllUsers();
 		}
 		System.out.println(status);
 	}

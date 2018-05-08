@@ -26,7 +26,7 @@ public class RoleDB implements IRole {
 
 	@Override
 	public Role getById(Long id) {
-		// TODO to get a new role of employees by id
+		// TODO implementation of getting a new role of employees by id
 		return null;
 	}
 

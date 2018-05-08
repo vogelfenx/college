@@ -1,5 +1,7 @@
 package buchungssystem.models.application;
 
+import java.util.GregorianCalendar;
+
 import buchungssystem.models.Model;
 
 public class User extends Model {
@@ -13,10 +15,12 @@ public class User extends Model {
 	 */
 	
 	private Long userRoleID;
+	private String userRole;
 	private String login;
 	private String password;
 	private Long employeeID;
-	// TODO private validFrom;
+	// DONE private validFrom(creating Date);
+	private GregorianCalendar validFrom;
 	
 	public User() {
 		super();
@@ -58,12 +62,27 @@ public class User extends Model {
 		this.employeeID = employeeID;
 	}
 
+	
+	public GregorianCalendar getValidFrom() {
+		return validFrom;
+	}
+
+	public void setValidFrom(GregorianCalendar validFrom) {
+		this.validFrom = validFrom;
+	}
+
+	public String getUserRole() {
+		return userRole;
+	}
+
+	public void setUserRole(String userRole) {
+		this.userRole = userRole;
+	}
+
 	@Override
 	public String toString() {
-		return "User [userRoleID=" + userRoleID + ", login=" + login + ", password=" + password + ", employeeID="
-				+ employeeID + "]";
+		return "User [userRoleID=" + userRoleID + ", userRole=" + userRole + ", login=" + login + ", password="
+				+ password + ", employeeID=" + employeeID + ", validFrom=" + validFrom + "]";
 	}
-	
-	
-	
+
 }

@@ -1,5 +1,7 @@
 package buchungssystem.models.employee;
 
+import java.util.GregorianCalendar;
+
 import buchungssystem.models.Model;
 
 public class Employee extends Model {
@@ -10,6 +12,9 @@ public class Employee extends Model {
 	 * 
 	 * private Long id; 
 	 * private Long lastID;
+	 * private GregorianCalendar validFrom;
+	 * private GregorianCalendar validTill;
+	 * private boolean isValid;
 	 * 
 	 */
 	
@@ -21,7 +26,7 @@ public class Employee extends Model {
 	private String role;
 	private Long userID;
 	private Long departmentID;
-	private boolean isValid;
+
 	
 	public Employee(String firstName, String lastName, String email) {
 		super();
@@ -33,6 +38,9 @@ public class Employee extends Model {
 		super(id);
 	}
 	
+	public Employee() {
+		super();
+	}
 	public String getFirstName() {
 		return firstName;
 	}
@@ -82,18 +90,11 @@ public class Employee extends Model {
 	public void setUserID(Long userID) {
 		this.userID = userID;
 	}
-	
-	public boolean isValid() {
-		return isValid;
-	}
-	public void setValid(boolean isValid) {
-		this.isValid = isValid;
-	}
 	@Override
 	public String toString() {
 		return "Employee [firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + ", phoneNumber="
 				+ phoneNumber + ", roleID=" + roleID + ", role=" + role + ", userID=" + userID + ", departmentID="
-				+ departmentID + ", isValid=" + isValid + "]";
+				+ departmentID + "]";
 	}
 	
 	

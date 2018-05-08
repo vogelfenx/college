@@ -137,6 +137,48 @@ public class Users {
 		return status;	
 	}
 	
+	public boolean getAllUsers() {
+		boolean status = false;
+		
+		List<User> users = new ArrayList<>();
+		
+		UserDB userDB= new UserDB();
+		UserRoleDB userRoleDB = new UserRoleDB();
+		
+		users = userDB.getAll();
+		
+		if (users.size() != 0) {
+			for (User user : users) {
+				//getting & setting of role of a user
+				UserRole userRole = userRoleDB.getById(user.getUserRoleID());
+				user.setUserRole(userRole.getRole());
+				
+				//getting & setting of employeeID of a user
+				Employee employee = getEmployeeByUserID(user.getId());
+				user.setEmployeeID(employee.getId());
+			}
+		}
+		
+		if (users.size() != 0) {
+			for (User user : users) {
+				System.out.println(user.toString());
+				System.out.println("------");
+				status = true;
+			}
+		} else {
+			status = false;
+		}
+		
+		return status;
+	}
+	
+	////getting & setting of employee-profile of a user
+	public Employee getEmployeeByUserID(Long userID) {
+		EmployeeDB employeeDB = new EmployeeDB();
+		Employee employee = employeeDB.getByUserID(userID);
+		return employee;
+	}
+	
 	//getter&setter
 	public String getLogin() {
 		return login;

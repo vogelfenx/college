@@ -2,6 +2,7 @@ package buchungssystem.dao.Impl.MySQL.application;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -25,8 +26,31 @@ public class UserRoleDB implements IUserRole {
 
 	@Override
 	public UserRole getById(Long id) {
-		// TODO getting a users role by ID
-		return null;
+		// DONE implementation of getting a new user role by ID
+		Connection mysqlConnect = conn.init();
+		
+		UserRole userRole = new UserRole(id);
+		
+		ResultSet resultSet;
+		
+		String sqlQuery = "SELECT role FROM UserRole where userRoleID=?";
+		
+		try {
+			PreparedStatement sqlStmt = mysqlConnect.prepareStatement(sqlQuery);
+			sqlStmt.setLong(1, id);
+			resultSet = sqlStmt.executeQuery();
+			resultSet.next();
+			
+			resultSet.getString(1);
+			String role = resultSet.wasNull() ? null : resultSet.getString(1); 
+			
+			userRole.setRole(role);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return userRole;
 	}
 
 	@Override

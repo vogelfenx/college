@@ -1,9 +1,11 @@
 package buchungssystem.dao.Impl.MySQL.employee;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import buchungssystem.dao.Impl.MySQL.DBconnection;
@@ -20,13 +22,13 @@ public class EmployeeDB implements IEmployeeDao{
 	
 	@Override
 	public List<Employee> getAll() {
-
+		//TODO implementation of a view of all employees in the system
 		return null;
 	}
 
 	@Override
 	public Employee getById(Long id) {
-		
+		//TODO remove role + change sqlQuery(remove join statement)
 		//initialize connection
 		Connection mysqlConnect = conn.init();
 		
@@ -96,6 +98,98 @@ public class EmployeeDB implements IEmployeeDao{
 		conn.finalize();
 
 		return currentEmployee;
+	}
+	
+	public Employee getByUserID(Long userID) {
+		Connection mysqlConnect = conn.init();
+		
+		Employee employee = new Employee();
+		
+		GregorianCalendar gregorianDate = new GregorianCalendar();
+		
+		ResultSet resultSet;
+		
+		String sqlQuery = "SELECT employeeID, "
+				+ "departmentID, "
+				+ "roleID, "
+				+ "firstName, "
+				+ "lastName, "
+				+ "firmaEmail, "
+				+ "phoneNumber, "
+				+ "validFrom, "
+				+ "validTill, "
+				+ "isValid, "
+				+ "lastID "
+				+ "FROM Employee WHERE userID = ?";
+		
+		try {
+			PreparedStatement sqlStmt = mysqlConnect.prepareStatement(sqlQuery);
+			sqlStmt.setLong(1, userID);
+			resultSet = sqlStmt.executeQuery();
+			resultSet.next();
+			
+			resultSet.getLong(1);
+			Long employeeID = resultSet.wasNull() ? null : resultSet.getLong(1);
+			
+			resultSet.getLong(2);
+			Long departmentID = resultSet.wasNull() ? null : resultSet.getLong(2);
+			
+			resultSet.getLong(3);
+			Long roleID = resultSet.wasNull() ? null : resultSet.getLong(3);
+			
+			resultSet.getString(4);
+			String firstName = resultSet.wasNull() ? null : resultSet.getString(4);
+			
+			resultSet.getString(5);
+			String lastName = resultSet.wasNull() ? null : resultSet.getString(5);
+			
+			resultSet.getString(6);
+			String firmaEmail = resultSet.wasNull() ? null : resultSet.getString(6);
+			
+			resultSet.getString(7);
+			String phoneNumber = resultSet.wasNull() ? null : resultSet.getString(7);
+			
+			resultSet.getDate(8);
+			Date validFrom = resultSet.wasNull() ? null : resultSet.getDate(8);
+			
+			resultSet.getDate(9);
+			Date validTill = resultSet.wasNull() ? null : resultSet.getDate(9);
+			
+			resultSet.getBoolean(10);
+			boolean isValid = resultSet.wasNull() ? null : resultSet.getBoolean(10);
+			
+			resultSet.getLong(11);
+			Long lastID = resultSet.wasNull() ? null : resultSet.getLong(11);
+			
+			employee.setId(employeeID);
+			employee.setDepartmentID(departmentID);
+			employee.setRoleID(roleID);
+			employee.setFirstName(firstName);
+			employee.setLastName(lastName);
+			employee.setEmail(firmaEmail);
+			employee.setPhoneNumber(phoneNumber);
+			
+			if (validFrom != null) {
+				gregorianDate.setTime(validFrom);
+				employee.setValidFrom(gregorianDate);
+			}
+			
+			if (validTill != null) {
+				gregorianDate.setTime(validTill);
+				employee.setValidTill(gregorianDate);
+			}
+			
+			employee.setValid(isValid);
+			employee.setLastID(lastID);
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		return employee;	
 	}
 
 	@Override
