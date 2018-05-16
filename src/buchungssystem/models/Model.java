@@ -9,7 +9,7 @@ import java.util.GregorianCalendar;
 public class Model {
 	
 	private Long id;
-	//DONE implement lastID properties in case of modifying the object in DB
+	//DONE implementation of lastID properties in case of modifying the object in DB
 	private Long lastID;
 	private GregorianCalendar validFrom;
 	private GregorianCalendar validTill;

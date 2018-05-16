@@ -9,11 +9,15 @@ import buchungssystem.dao.Impl.MySQL.application.UserRoleDB;
 import buchungssystem.dao.Impl.MySQL.application.UserRoleHasPermissionDB;
 import buchungssystem.dao.Impl.MySQL.employee.EmployeeDB;
 import buchungssystem.dao.Impl.MySQL.employee.RoleDB;
+import buchungssystem.dao.Impl.MySQL.product.DepartmentDB;
+import buchungssystem.dao.Impl.MySQL.product.ProductCategoryDB;
 import buchungssystem.models.application.User;
 import buchungssystem.models.application.UserRole;
 import buchungssystem.models.application.UserRoleHasPermission;
 import buchungssystem.models.employee.Employee;
 import buchungssystem.models.employee.Role;
+import buchungssystem.models.product.Department;
+import buchungssystem.models.product.ProductCategory;
 
 public class Users {
 	private String login;
@@ -47,7 +51,7 @@ public class Users {
 		//Erstellung eines neues Objektes der Class EmployeeFile(DaoImpl) 
 		EmployeeFile newEmployee = new EmployeeFile(file);
 		
-		//getAll(): List <Employee>
+		//getAll(): List <Employee> from CSV-File
 		employees = newEmployee.getAll();
 		
 		for (Employee employee : employees) {
@@ -138,6 +142,7 @@ public class Users {
 	}
 	
 	public boolean getAllUsers() {
+		//TODO return type should be List
 		boolean status = false;
 		
 		List<User> users = new ArrayList<>();
@@ -172,11 +177,100 @@ public class Users {
 		return status;
 	}
 	
-	////getting & setting of employee-profile of a user
+	public List<Employee> getAllEmployees() {
+		//TODO getRole & getDeparment of an Employee
+		List<Employee> employees = new ArrayList<>();
+		
+		EmployeeDB employeeDB = new EmployeeDB();
+		
+		employees = employeeDB.getAll();
+		
+		if(employees.size() != 0) {
+			for (Employee employee : employees) {
+				System.out.println(employee.toString());
+				System.out.println("------");
+			}
+		}
+		
+		return employees;
+	}
+	
+	public boolean SoftDeleteEmployee(Employee employee) {
+		boolean status = false;
+		
+		//check if Employee has UserID and make soft-delete on this
+		if (employee.getUserID() != null) {
+			UserDB userDB = new UserDB();
+			User user = userDB.getById(employee.getUserID());
+			userDB.softDelete(user);
+		}
+		
+		EmployeeDB employeeDB = new EmployeeDB();
+		status = employeeDB.softDelete(employee);
+		
+		return status;
+	}
+	
+	public User getUserByID(Long id) {
+		UserDB userDB = new UserDB();
+		User user = userDB.getById(id);
+		return user;
+	}
+	
+	public Department getDepartmentByID(Long id) {
+		DepartmentDB departmentDB = new DepartmentDB();
+		Department department = departmentDB.getById(id);
+		return department;
+	}
+	
+	public List<Department> getAllDepartments() {
+		List<Department> departments = new ArrayList<>();
+		
+		DepartmentDB departmentDB = new DepartmentDB();
+		
+		departments = departmentDB.getAll();
+		
+		for (Department department : departments) {
+			System.out.println(department.toString());
+			System.out.println("----");
+		}
+		
+		return departments;
+	}
+	
+	
+	//getting & setting of employee-profile of a user
 	public Employee getEmployeeByUserID(Long userID) {
 		EmployeeDB employeeDB = new EmployeeDB();
 		Employee employee = employeeDB.getByUserID(userID);
 		return employee;
+	}
+	
+	//add new department to System
+	public boolean addDepartmentToDB(Department department) {
+		boolean status = false;
+		DepartmentDB departmentDB = new DepartmentDB();
+		
+		status = departmentDB.add(department);
+		
+		return status;
+	}
+	
+	//add new category of a product
+	public boolean addProductCategoryToDB(ProductCategory productCategory) {
+		boolean status = false;
+		ProductCategoryDB productCategoryDB = new ProductCategoryDB();
+		status = productCategoryDB.add(productCategory);
+		return status;
+	}
+	
+	//get new category of product by id
+	public ProductCategory getProductCategoryByID(Long id) {
+		ProductCategory productCategory = new ProductCategory();
+		
+		ProductCategoryDB productCategoryDB = new ProductCategoryDB();
+		productCategory = productCategoryDB.getById(id);
+		return productCategory;
 	}
 	
 	//getter&setter

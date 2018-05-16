@@ -13,9 +13,11 @@ import buchungssystem.models.employee.Role;
 public class RoleDB implements IRole {
 	
 	DBconnection conn;
+	Connection mysqlConnect;
 	
 	public RoleDB() {
 		conn = new DBconnection("root", "root");
+		mysqlConnect = conn.init();
 	}
 
 	@Override
@@ -26,7 +28,7 @@ public class RoleDB implements IRole {
 
 	@Override
 	public Role getById(Long id) {
-		// TODO implementation of getting a new role of employees by id
+		// TODO implementation of a getting a new role of employees by id
 		return null;
 	}
 
@@ -58,7 +60,7 @@ public class RoleDB implements IRole {
 		}
 		
 		//close connection
-		conn.finalize();
+		//conn.finalize();
 				
 		return status;
 	}

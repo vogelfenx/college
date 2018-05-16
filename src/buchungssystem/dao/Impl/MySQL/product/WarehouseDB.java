@@ -1,47 +1,57 @@
 package buchungssystem.dao.Impl.MySQL.product;
 
+import java.sql.Connection;
 import java.util.List;
 
+import buchungssystem.dao.Impl.MySQL.DBconnection;
 import buchungssystem.dao.i.product.IWarehouse;
 import buchungssystem.models.Model;
 
 public class WarehouseDB implements IWarehouse {
+	
+	DBconnection conn;
+	Connection mysqlConnect;
+	
+	public WarehouseDB() {
+		conn = new DBconnection("root", "root");
+		mysqlConnect = conn.init();
+	}
 
 	@Override
 	public List<Model> getAll() {
-		// TODO to get the view of all Warehouses in the system  
+		// TODO implementation of getting a view of all Warehouses in the system  
 		return null;
 	}
 
 	@Override
 	public Model getById(Long id) {
-		// TODO to get a Warehouse object by ID
+		// TODO implementation of getting a Warehouse object by ID
 		return null;
 	}
 
 	@Override
 	public boolean add(Model model) {
-		// TODO to add a new Warehouse into the system
+		// TODO implementation of adding a new Warehouse into the system
 		return false;
 	}
 
 	@Override
 	public boolean update(Model model) {
-		// TODO to save update a warehouse object
+		// TODO implementation of save updating a warehouse object
 		// !! update referenced rows in child tables !! 
 		return false;
 	}
 
 	@Override
 	public boolean softDelete(Model model) {
-		// TODO disabling a warehouse object
+		// TODO implementation of disabling a warehouse object
 		// !! update referenced rows in child tables !!
 		return false;
 	}
 
 	@Override
 	public boolean delete(Model model) {
-		// TODO hard delete a warehouse object from the system
+		// TODO implementation of hard deleting a warehouse object from the system
 		return false;
 	}
 

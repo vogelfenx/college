@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.List;
 
@@ -15,22 +16,112 @@ import buchungssystem.models.employee.Employee;
 public class EmployeeDB implements IEmployeeDao{
 
 	DBconnection conn;
+	Connection mysqlConnect;
 	
 	public EmployeeDB() {
 		conn = new DBconnection("root", "root");
+		mysqlConnect = conn.init();
 	}
 	
 	@Override
 	public List<Employee> getAll() {
-		//TODO implementation of a view of all employees in the system
-		return null;
+		//DONE implementation of a view of all employees in the system
+		
+		List<Employee> employees = new ArrayList<Employee>();
+		
+		ResultSet resultSet = null;
+		
+		String sqlQuery = "SELECT employeeID, "
+				+ "departmentID, "
+				+ "roleID, "
+				+ "userID, "
+				+ "firstName, "
+				+ "lastName, "
+				+ "firmaEmail, "
+				+ "phoneNumber, "
+				+ "validFrom, "
+				+ "validTill, "
+				+ "isValid, "
+				+ "lastID "
+				+ "FROM Employee";
+		
+		try {
+			PreparedStatement sqlStmt = mysqlConnect.prepareStatement(sqlQuery);
+			resultSet = sqlStmt.executeQuery();
+			while (resultSet.next()) {
+				Long employeeID = resultSet.getLong(1);
+				
+				resultSet.getLong(2);
+				Long departmentID = resultSet.wasNull() ? null: resultSet.getLong(2);                            
+				                                                                                            
+				resultSet.getLong(3);                                                                       
+				Long roleID = resultSet.wasNull() ? null : resultSet.getLong(2);
+				
+				resultSet.getLong(4);                                                                       
+				Long userID = resultSet.wasNull() ? null : resultSet.getLong(1);
+				                       				                                                                                            
+				resultSet.getString(5);                                                                     
+				String firstName = resultSet.wasNull() ? null : resultSet.getString(5);                     
+				                                                                                            
+				resultSet.getString(6);                                                                     
+				String lastName = resultSet.wasNull() ? null : resultSet.getString(6);                      
+				                                                                                            
+				resultSet.getString(7);                                                                     
+				String email = resultSet.wasNull() ? null : resultSet.getString(7);                         
+					                                                                                        
+				resultSet.getString(8);                                                                     
+				String phoneNumber = resultSet.wasNull() ? null : resultSet.getString(8);                   
+				
+				resultSet.getDate(9);
+				Date validFrom = resultSet.wasNull() ? null : resultSet.getDate(9);
+				
+				resultSet.getDate(10);
+				Date validTill = resultSet.wasNull() ? null : resultSet.getDate(10);
+				
+				resultSet.getBoolean(11);                                                                    
+				boolean isValid = resultSet.wasNull() ? null : resultSet.getBoolean(11);
+				
+				resultSet.getLong(12);
+				Long lastID = resultSet.wasNull() ? null : resultSet.getLong(12);
+				
+				Employee employee = new Employee(employeeID);
+				                                                                                                                                                                                                                                                
+				employee.setDepartmentID(departmentID);
+				employee.setRoleID(roleID);
+				employee.setUserID(userID);
+				employee.setFirstName(firstName);                                                    
+				employee.setLastName(lastName);                                                      
+				employee.setEmail(email);                                                            
+				employee.setPhoneNumber(phoneNumber);
+				
+				if (validFrom != null) {
+					GregorianCalendar gregorianValidFrom = new GregorianCalendar();
+					gregorianValidFrom.setTime(validFrom);
+					employee.setValidFrom(gregorianValidFrom);
+				}
+				
+				if (validTill != null) {
+					GregorianCalendar gregorianValidTill = new GregorianCalendar();
+					gregorianValidTill.setTime(validTill);
+					employee.setValidTill(gregorianValidTill);
+				}
+				
+				employee.setValid(isValid);
+				employee.setLastID(lastID);
+	
+				employees.add(employee);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return employees;
 	}
 
 	@Override
 	public Employee getById(Long id) {
-		//TODO remove role + change sqlQuery(remove join statement)
-		//initialize connection
-		Connection mysqlConnect = conn.init();
+		//TODO remove role + join statement in sqlQuery
+		//TODO date fields & other fields implementation
 		
 		ResultSet resultSet;
 		PreparedStatement sqlStmt;
@@ -78,7 +169,7 @@ public class EmployeeDB implements IEmployeeDao{
 			String phoneNumber = resultSet.wasNull() ? null : resultSet.getString(8);
 			
 			resultSet.getBoolean(9);
-			boolean isValid = resultSet.wasNull() ? null : resultSet.getBoolean(9);
+			boolean isValid = resultSet.wasNull() ? false : resultSet.getBoolean(9);
 
 			currentEmployee.setUserID(userID);
 			currentEmployee.setRoleID(roleID);
@@ -95,13 +186,12 @@ public class EmployeeDB implements IEmployeeDao{
 		}
 		
 		//close connection
-		conn.finalize();
+		//conn.finalize();
 
 		return currentEmployee;
 	}
 	
 	public Employee getByUserID(Long userID) {
-		Connection mysqlConnect = conn.init();
 		
 		Employee employee = new Employee();
 		
@@ -195,10 +285,7 @@ public class EmployeeDB implements IEmployeeDao{
 	@Override
 	public boolean add(Employee model) {
 		
-		boolean status;
-		
-		//initialize connection
-		Connection mysqlConnect = conn.init();
+		boolean status;		
 		
 		String sqlQuery = "INSERT INTO Employee ("
 				+ "departmentID, "
@@ -224,7 +311,8 @@ public class EmployeeDB implements IEmployeeDao{
 			if (model.getRoleID() != null){
 				sqlStmt.setInt(2, model.getRoleID().intValue());
 			} else {
-				sqlStmt.setString(2, null);
+				//Default 0 = Neulinge
+				sqlStmt.setInt(2, 0);
 			}
 			
 			if (model.getUserID() != null){
@@ -245,8 +333,12 @@ public class EmployeeDB implements IEmployeeDao{
 				sqlStmt.setString(7, null);
 			}
 			
-			sqlStmt.setInt(8, model.getLastID().intValue());
-
+			if (model.getLastID() != null) {
+				sqlStmt.setInt(8, model.getLastID().intValue());
+			} else {
+				sqlStmt.setInt(8, 0);
+			}
+			
 			sqlStmt.executeUpdate();
 			status = true;
 		} catch (SQLException e) {
@@ -255,7 +347,7 @@ public class EmployeeDB implements IEmployeeDao{
 		}
 		
 		//close connection
-		conn.finalize();
+		//conn.finalize();
 		
 		return status;
 	}
@@ -263,8 +355,6 @@ public class EmployeeDB implements IEmployeeDao{
 	@Override
 	public boolean update(Employee model) {
 		boolean status = false;
-		//initialize connection
-		Connection mysqlConnect = conn.init();
 		
 		String sqlQuery = "UPDATE Employee SET "
 				+ "departmentID = ?, "
@@ -346,9 +436,6 @@ public class EmployeeDB implements IEmployeeDao{
 		
 		boolean status;
 		
-		//initialize connection
-		Connection mysqlConnect = conn.init();
-		
 		//disable this employee and set firmaEmail(primary key) to null
 		String sqlQuery = "UPDATE Employee SET isValid = 0, firmaEmail = employeeID where employeeID = ?";
 		try {
@@ -363,7 +450,7 @@ public class EmployeeDB implements IEmployeeDao{
 		}	
 		
 		//close connection
-		conn.finalize();
+		//conn.finalize();
 		
 		return status;
 	}

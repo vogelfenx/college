@@ -1,11 +1,21 @@
 package buchungssystem.dao.Impl.MySQL.application;
 
+import java.sql.Connection;
 import java.util.List;
 
+import buchungssystem.dao.Impl.MySQL.DBconnection;
 import buchungssystem.dao.i.application.IPermission;
 import buchungssystem.models.application.Permission;
 
 public class PermissionDB implements IPermission {
+	
+	DBconnection conn;
+	Connection mysqlConnect;
+	
+	public PermissionDB() {
+		conn = new DBconnection("root", "root");
+		mysqlConnect = conn.init();
+	}
 
 	@Override
 	public List<Permission> getAll() {

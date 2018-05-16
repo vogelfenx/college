@@ -12,9 +12,11 @@ import buchungssystem.models.application.UserRoleHasPermission;
 public class UserRoleHasPermissionDB implements IUserRoleHasPermission {
 
 	DBconnection conn;
+	Connection mysqlConnect;
 	
 	public UserRoleHasPermissionDB() {
 		conn = new DBconnection("root", "root");
+		mysqlConnect = conn.init();
 	}
 	
 	@Override

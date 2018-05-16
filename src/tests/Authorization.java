@@ -15,7 +15,7 @@ public class Authorization {
 	public Authorization(String login, String passwd) {
 		UserDB userDB = new UserDB();
 		User user = userDB.getByLogin(login, passwd);
-		if (user != null) {
+		if (user != null && user.isValid() == true) {
 			EmployeeDB employeeDB = new EmployeeDB();
 			Employee employee = employeeDB.getById(user.getEmployeeID());
 			if (employee != null) {

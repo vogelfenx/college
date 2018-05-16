@@ -10,7 +10,7 @@ public class ProductFile implements IProduct {
 
 	@Override
 	public List<Product> getAll() {
-		// TODO for transport all data from a csv-file to DB
+		// TODO implementation of transfer all data's from a csv-file to DB
 		return null;
 	}
 
@@ -21,7 +21,7 @@ public class ProductFile implements IProduct {
 
 	@Override
 	public boolean add(Product model) {
-		// TODO for transport all data from DB to a csv-file
+		// TODO implementation of transfer all data's from DB to a csv-file
 		return false;
 	}
 

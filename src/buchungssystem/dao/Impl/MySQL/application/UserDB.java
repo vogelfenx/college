@@ -12,13 +12,16 @@ import java.util.List;
 import buchungssystem.dao.Impl.MySQL.DBconnection;
 import buchungssystem.dao.i.application.IUser;
 import buchungssystem.models.application.User;
+import buchungssystem.models.employee.Employee;
 
 public class UserDB implements IUser{
 	
 	DBconnection conn;
+	Connection mysqlConnect;
 
 	public UserDB() {
 		conn = new DBconnection("root", "root");
+		mysqlConnect = conn.init();
 	}
 
 	@Override
@@ -76,13 +79,72 @@ public class UserDB implements IUser{
 
 	@Override
 	public User getById(Long id) {
-		// TODO getting a user by ID
-		return null;
+		// TODO implementation of a getting a user by ID
+		
+		User user = new User(id);
+		
+		GregorianCalendar gregorianDate = new GregorianCalendar();
+		
+		ResultSet resultSet;
+		PreparedStatement sqlStmt;
+		
+		String sqlQUery = "SELECT userRoleID, "
+				+ "login, "
+				+ "validFrom, "
+				+ "validTill, "
+				+ "isValid, "
+				+ "lastID "
+				+ "FROM User where userID = ?";
+		
+		try {
+			sqlStmt = mysqlConnect.prepareStatement(sqlQUery);
+			sqlStmt.setLong(1, id);
+			resultSet = sqlStmt.executeQuery();
+			resultSet.next();
+			
+			resultSet.getLong(1);
+			Long userRoleID = resultSet.wasNull() ? null : resultSet.getLong(1);
+			
+			resultSet.getString(2);
+			String login = resultSet.wasNull() ? null : resultSet.getString(2);
+			
+			resultSet.getDate(3);
+			Date validFrom = resultSet.wasNull() ? null : resultSet.getDate(3);
+			
+			resultSet.getDate(4);
+			Date validTill = resultSet.wasNull() ? null : resultSet.getDate(4);
+			
+			resultSet.getBoolean(5);
+			Boolean isValid = resultSet.wasNull() ? null : resultSet.getBoolean(5);
+			
+			resultSet.getLong(6);
+			Long lastID = resultSet.wasNull() ? null : resultSet.getLong(6);
+			
+			user.setUserRoleID(userRoleID);
+			user.setLogin(login);
+			
+			if (validFrom != null) {
+				gregorianDate.setTime(validFrom);
+				user.setValidFrom(gregorianDate);
+			}
+			if (validTill != null) {
+				gregorianDate.setTime(validTill);
+				user.setValidTill(gregorianDate);
+			}
+			
+			user.setValid(isValid);
+			user.setLastID(lastID);
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return user;
 	}
 
 	@Override
 	public boolean add(User model) {
-		// DONE adding a new user
+		// DONE implementation of adding a new user
 		
 		boolean status = false;
 		
@@ -112,7 +174,7 @@ public class UserDB implements IUser{
 		}
 		
 		//close connection
-		conn.finalize();
+		//conn.finalize();
 		
 		return status;
 	}
@@ -126,8 +188,20 @@ public class UserDB implements IUser{
 
 	@Override
 	public boolean softDelete(User model) {
-		// TODO soft deleting 
-		return false;
+		// TODO implementation of a soft deleting 
+		boolean status = false;
+		
+		String sqlQuery = "UPDATE User SET isValid = 0, passw = '' WHERE userID = ?";
+		try {
+			PreparedStatement sqlStmt = mysqlConnect.prepareStatement(sqlQuery);
+			sqlStmt.setLong(1, model.getId());
+			sqlStmt.executeUpdate();
+			status = true;
+		} catch (SQLException e) {
+			status = false;
+			e.printStackTrace();
+		}
+		return status;
 	}
 
 	@Override
@@ -149,7 +223,10 @@ public class UserDB implements IUser{
 			isExists = sqlStmt.executeQuery();
 			isExists.next();
 			if (isExists.getBoolean(1) == true){
-				sqlQuery = "select user.userID, employeeID, user.userRoleID from user join employee on employee.userID = user.userID where login = ?";
+				sqlQuery = "select user.userID, "
+						+ "employeeID, "
+						+ "user.userRoleID, "
+						+ "user.isValid from user join employee on employee.userID = user.userID where login = ?";
 				sqlStmt = mysqlConnect.prepareStatement(sqlQuery);
 				sqlStmt.setString(1, login);
 				isExists = sqlStmt.executeQuery();
@@ -164,17 +241,21 @@ public class UserDB implements IUser{
 				isExists.getLong(3);
 				Long userRoleID = isExists.wasNull() ? null : isExists.getLong(3);
 				
+				isExists.getBoolean(4);
+				boolean isValid = isExists.wasNull() ? null : isExists.getBoolean(4);
+				
 				currentUser = new User(userID);
 				currentUser.setEmployeeID(employeeID);
 				currentUser.setLogin(login);
 				currentUser.setUserRoleID(userRoleID);
+				currentUser.setValid(isValid);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		
 		//close connection
-		conn.finalize();
+		//conn.finalize();
 		
 		return currentUser;
 	}

@@ -1,5 +1,7 @@
 package buchungssystem.models.product;
 
+import java.util.GregorianCalendar;
+
 import buchungssystem.models.Model;
 
 public class Department extends Model {
@@ -8,11 +10,14 @@ public class Department extends Model {
 	 * Folgende Eigenschaften übernimmt Model.java
 	 * 
 	 * private Long id; 
+	 * private Long lastID;
+	 * private GregorianCalendar validFrom;
+	 * private GregorianCalendar validTill;
+	 * private boolean isValid;
 	 * 
 	 */
 	
-	private String name;
-	private ProductCategory productCategoryName;
+	private String title;
 	
 	public Department() {
 		super();
@@ -22,20 +27,17 @@ public class Department extends Model {
 		super(id);
 	}
 
-	public String getName() {
-		return name;
+	public String getTitle() {
+		return title;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
-	public ProductCategory getProductCategoryName() {
-		return productCategoryName;
-	}
-
-	public void setProductCategoryName(ProductCategory productCategoryName) {
-		this.productCategoryName = productCategoryName;
+	@Override
+	public String toString() {
+		return "Department [title=" + title + "]";
 	}
 	
 	

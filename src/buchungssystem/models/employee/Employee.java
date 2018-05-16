@@ -97,6 +97,4 @@ public class Employee extends Model {
 				+ departmentID + "]";
 	}
 	
-	
-	
 }

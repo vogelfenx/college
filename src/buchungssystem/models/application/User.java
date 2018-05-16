@@ -5,6 +5,7 @@ import java.util.GregorianCalendar;
 import buchungssystem.models.Model;
 
 public class User extends Model {
+	//TODO remove fields then they are in Model.java
 
 	/* 
 	 * Folgende Eigenschaften übernimmt Model.java
@@ -21,6 +22,9 @@ public class User extends Model {
 	private Long employeeID;
 	// DONE private validFrom(creating Date);
 	private GregorianCalendar validFrom;
+	private GregorianCalendar validTill;
+	private boolean isValid;
+	private Long lastID;
 	
 	public User() {
 		super();
@@ -79,10 +83,36 @@ public class User extends Model {
 		this.userRole = userRole;
 	}
 
+	public GregorianCalendar getValidTill() {
+		return validTill;
+	}
+
+	public void setValidTill(GregorianCalendar validTill) {
+		this.validTill = validTill;
+	}
+	
+	public boolean getIsValid() {
+		return isValid;
+	}
+
+	public void setIsValid(boolean isValid) {
+		this.isValid = isValid;
+	}
+
+	public Long getLastID() {
+		return lastID;
+	}
+
+	public void setLastID(Long lastID) {
+		this.lastID = lastID;
+	}
+
 	@Override
 	public String toString() {
 		return "User [userRoleID=" + userRoleID + ", userRole=" + userRole + ", login=" + login + ", password="
-				+ password + ", employeeID=" + employeeID + ", validFrom=" + validFrom + "]";
+				+ password + ", employeeID=" + employeeID + ", validFrom=" + validFrom + ", validTill=" + validTill
+				+ ", lastID=" + lastID + "]";
 	}
+
 
 }

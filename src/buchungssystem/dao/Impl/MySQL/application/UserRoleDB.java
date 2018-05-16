@@ -13,9 +13,11 @@ import buchungssystem.models.application.UserRole;
 public class UserRoleDB implements IUserRole {
 	
 	DBconnection conn;
+	Connection mysqlConnect;
 	
 	public UserRoleDB() {
 		conn = new DBconnection("root", "root");
+		mysqlConnect = conn.init();
 	}
 
 	@Override
@@ -72,7 +74,7 @@ public class UserRoleDB implements IUserRole {
 		}
 		
 		//close connection
-		conn.finalize();
+		//conn.finalize();
 		
 		return status;
 	}
