@@ -37,13 +37,13 @@ public class DepartmentDB implements IDepartment {
 		// DONE implementation of a view of all available departments in the system
 		
 		List<Department> deparments = new ArrayList<Department>();
-		Department department = new Department();
 		
 		ResultSet resultSet = null;
 		PreparedStatement sqlStmt;
 		String sqlQuery;
 		
-		sqlQuery = "SELECT title, "
+		sqlQuery = "SELECT departmentID, "
+				+ "title, "
 				+ "validFrom, "
 				+ "validTill, "
 				+ "isValid, "
@@ -54,21 +54,28 @@ public class DepartmentDB implements IDepartment {
 			sqlStmt = mysqlConnect.prepareStatement(sqlQuery);
 			resultSet = sqlStmt.executeQuery();
 			while (resultSet.next()) {
-				resultSet.getString(1);
-				title = resultSet.wasNull() ? null : resultSet.getString(1);
 				
-				resultSet.getDate(2);
-				validFrom = resultSet.wasNull() ? null : resultSet.getDate(2);
+				resultSet.getLong(1);
+				departmentID = resultSet.wasNull() ? null : resultSet.getLong(1);
+				
+				resultSet.getString(2);
+				title = resultSet.wasNull() ? null : resultSet.getString(2);
 				
 				resultSet.getDate(3);
-				validTill = resultSet.wasNull() ? null : resultSet.getDate(3);
+				validFrom = resultSet.wasNull() ? null : resultSet.getDate(3);
 				
-				resultSet.getBoolean(4);
-				isValid = resultSet.wasNull() ? false : resultSet.getBoolean(4);
+				resultSet.getDate(4);
+				validTill = resultSet.wasNull() ? null : resultSet.getDate(4);
 				
-				resultSet.getLong(5);
-				lastID = resultSet.wasNull() ? null : resultSet.getLong(5);
+				resultSet.getBoolean(5);
+				isValid = resultSet.wasNull() ? false : resultSet.getBoolean(5);
 				
+				resultSet.getLong(6);
+				lastID = resultSet.wasNull() ? null : resultSet.getLong(6);
+				
+				Department department = new Department();
+				
+				department.setId(departmentID);
 				department.setTitle(title);
 				
 				if (validFrom != null) {

@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import buchungssystem.dao.Impl.MySQL.DBconnection;
 import buchungssystem.dao.i.product.IProductCategory;
-import buchungssystem.models.product.Department;
 import buchungssystem.models.product.ProductCategory;
 
 public class ProductCategoryDB implements IProductCategory {
@@ -16,6 +16,7 @@ public class ProductCategoryDB implements IProductCategory {
 	DBconnection conn;
 	Connection mysqlConnect;
 	
+	private Long id;
 	private Long departmentID;
 	private String productCategoryName;
 	
@@ -26,12 +27,47 @@ public class ProductCategoryDB implements IProductCategory {
 
 	@Override
 	public List<ProductCategory> getAll() {
-		// TODO implementation of a view of all product category's in the system
+		// DONE implementation of a view of all product category's in the system
 		
-		//List<Pro>
+		List<ProductCategory> productCategories = new ArrayList<ProductCategory>();
+		
+		ResultSet resultSet = null;
+		PreparedStatement sqlStmt;
+		String sqlQuery;
+		
+		sqlQuery = "SELECT productCategoryID, "
+				+ "departmentID, "
+				+ "productCategoryName "
+				+ "FROM ProductCategory";
+		
+		try {
+			sqlStmt = mysqlConnect.prepareStatement(sqlQuery);
+			resultSet = sqlStmt.executeQuery();
+			while (resultSet.next()) {
+				
+				resultSet.getLong(1);
+				id = resultSet.wasNull() ? null : resultSet.getLong(1);
+				
+				resultSet.getLong(2);
+				departmentID = resultSet.wasNull() ? null : resultSet.getLong(2);
+				
+				resultSet.getString(3);
+				productCategoryName = resultSet.wasNull() ? null : resultSet.getString(3);
+				
+				ProductCategory productCategory = new ProductCategory();
+				
+				productCategory.setId(id);
+				productCategory.setDepartmentID(departmentID);
+				productCategory.setProductCategoryName(productCategoryName);
+				
+				productCategories.add(productCategory);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
 		
 		
-		return null;
+		return productCategories;
 	}
 
 	@Override

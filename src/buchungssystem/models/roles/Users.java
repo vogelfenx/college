@@ -230,11 +230,6 @@ public class Users {
 		
 		departments = departmentDB.getAll();
 		
-		for (Department department : departments) {
-			System.out.println(department.toString());
-			System.out.println("----");
-		}
-		
 		return departments;
 	}
 	
@@ -271,6 +266,16 @@ public class Users {
 		ProductCategoryDB productCategoryDB = new ProductCategoryDB();
 		productCategory = productCategoryDB.getById(id);
 		return productCategory;
+	}
+	
+	//get all categories of product
+	public List<ProductCategory> getAllProductCategories() {
+		List<ProductCategory> productCategories = new ArrayList<ProductCategory>();
+		
+		ProductCategoryDB productCategoryDB = new ProductCategoryDB();
+		productCategories = productCategoryDB.getAll();
+		
+		return productCategories;	
 	}
 	
 	//getter&setter

@@ -87,8 +87,13 @@ public class login {
 //			System.out.println(department.toString());
 			
 			//get all departments in the system
-//			List<Department> departments = new ArrayList<>();
-//			departments = currentUser.getAllDepartments();
+/*			List<Department> departments = new ArrayList<>();
+			departments = currentUser.getAllDepartments();
+			
+			for (Department department : departments) {
+				System.out.println("ID: " + department.getId() + ", " + department.toString() + "\n" + "--");
+/*			}
+			
 			
 			//add new department to the system
 //			Department department = new Department();
@@ -101,9 +106,18 @@ public class login {
 //			productCategory.setDepartmentID((long) 12);
 //			status = currentUser.addProductCategoryToDB(productCategory);
 			
-			//get Category of Product by ID
+			//get Category of a product by ProductCategoryID
 //			ProductCategory productCategory = currentUser.getProductCategoryByID((long) 10);
 //			System.out.println(productCategory.toString());
+			
+			//get all Categories of a product
+/*			List <ProductCategory> productCategories = new ArrayList<ProductCategory>();
+			productCategories = currentUser.getAllProductCategories();
+		
+			for (ProductCategory productCategory : productCategories) {
+				System.out.println("ID: " + productCategory.getId() + " " + productCategory.toString()+ "\n" + "--");
+			}
+*/			//
 			
 		}
 		System.out.println(status);
