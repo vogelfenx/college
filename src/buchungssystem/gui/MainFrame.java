@@ -39,6 +39,7 @@ import java.util.Observer;
 import java.awt.event.ActionEvent;
 import java.awt.GridLayout;
 import javax.swing.JTextField;
+import javax.swing.JSeparator;
 
 public class MainFrame extends JFrame {
 
@@ -52,7 +53,9 @@ public class MainFrame extends JFrame {
 	private JButton kundenBtn;
 	private JPanel userProfile;
 	private JPanel main;
-	private JPanel UserLoginPane;
+	private JPanel userLoginPane;
+	private JButton warenBtn;
+	private Component verticalStrut;
 
 	/**
 	 * Launch the application.
@@ -146,6 +149,15 @@ public class MainFrame extends JFrame {
 		box.add(Box.createVerticalStrut(10));
 		box.add(kundenBtn);
 		
+		verticalStrut = Box.createVerticalStrut(10);
+		box.add(verticalStrut);
+		
+		warenBtn = new JButton("Waren");
+		box.add(warenBtn);
+		
+		//adding of the box to menu Panel
+		menu.add(box);
+		
 		//specifying of styles of all buttons in the box 
 		for (Component c : box.getComponents()) {
 			if (c.getClass().equals(JButton.class)) {
@@ -157,9 +169,6 @@ public class MainFrame extends JFrame {
 				((JButton) c).setAlignmentX(Component.CENTER_ALIGNMENT);
 			}
 		}
-		
-		//adding of the box to menu Panel
-		menu.add(box);
 		
 		main = new JPanel();
 		main.setBorder(new TitledBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(64, 64, 64)), "", TitledBorder.CENTER, TitledBorder.ABOVE_TOP, null, Color.DARK_GRAY));
@@ -175,15 +184,12 @@ public class MainFrame extends JFrame {
 		main.add(userProfile);
 		
 		//adding of Login Panel to main Panel
-		UserLogin UserLogin = new UserLogin(fontBtn, this);
-		UserLoginPane =UserLogin.init();
-		main.add(UserLoginPane);
-		
-
-
+		UserLogin userLogin = new UserLogin(fontBtn, this);
+		userLoginPane = userLogin.init();
+		main.add(userLoginPane);
 		
 		JPanel footer = new JPanel();
-		footer.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "@2018", TitledBorder.CENTER, TitledBorder.BELOW_TOP, null, new Color(0, 0, 0)));
+		footer.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Warensystem@2018", TitledBorder.CENTER, TitledBorder.BELOW_TOP, null, new Color(0, 0, 0)));
 		contentPane.add(footer, BorderLayout.SOUTH);
 	}
 
@@ -260,11 +266,11 @@ public class MainFrame extends JFrame {
 	}
 
 	public JPanel getUserLoginPane() {
-		return UserLoginPane;
+		return userLoginPane;
 	}
 
 	public void setUserLoginPane(JPanel userLoginPane) {
-		UserLoginPane = userLoginPane;
+		userLoginPane = userLoginPane;
 	}
 	
 	

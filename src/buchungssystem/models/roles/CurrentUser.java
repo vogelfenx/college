@@ -20,6 +20,8 @@ public class CurrentUser extends Users {
 		permissions.setProperty("addUser", "true");
 		permissions.setProperty("updateUser", "true");
 		permissions.setProperty("deleteUser", "true");
+		//mitarbeiter
+		permissions.setProperty("readEmployeeTable", "true");
 		return permissions;
 	}
 	

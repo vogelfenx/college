@@ -22,6 +22,8 @@ import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.util.Observer;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class UserLogin extends JPanel  {
 	
@@ -34,10 +36,13 @@ public class UserLogin extends JPanel  {
 	JTextField loginField;
 	JPasswordField passwField;
 	MainFrame parentPane;
+	JButton anmeldenBtn;
 	
 	public UserLogin(Font fontBtn, MainFrame parentPane) {
 		this.fontBtn = fontBtn;
 		this.parentPane = parentPane;
+		
+		init();
 	}
 	
 	public JPanel init() {
@@ -75,7 +80,7 @@ public class UserLogin extends JPanel  {
 		passwField.setBounds(550, 260, textSize.width, textSize.height);
 		userLogin.add(passwField);
 		
-		JButton anmeldenBtn = new JButton("Anmelden");
+		anmeldenBtn = new JButton("Anmelden");
 		anmeldenBtn.setHorizontalAlignment(SwingConstants.CENTER);
 		anmeldenBtn.setFont(fontBtn);
 		anmeldenBtn.setSize(textSize);
@@ -84,6 +89,7 @@ public class UserLogin extends JPanel  {
 		
 		LoginController loginController = new LoginController(anmeldenBtn, this);
 		anmeldenBtn.addActionListener(loginController);
+		anmeldenBtn.addKeyListener(loginController);
 		
 		
 		return userLogin;
