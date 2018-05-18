@@ -50,6 +50,9 @@ public class MainFrame extends JFrame {
 	private JPanel header;
 	private JButton mitarbeiterBtn;
 	private JButton kundenBtn;
+	private JPanel userProfile;
+	private JPanel main;
+	private JPanel UserLoginPane;
 
 	/**
 	 * Launch the application.
@@ -158,14 +161,14 @@ public class MainFrame extends JFrame {
 		//adding of the box to menu Panel
 		menu.add(box);
 		
-		JPanel main = new JPanel();
+		main = new JPanel();
 		main.setBorder(new TitledBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(64, 64, 64)), "", TitledBorder.CENTER, TitledBorder.ABOVE_TOP, null, Color.DARK_GRAY));
 		contentPane.add(main, BorderLayout.CENTER);
 		main.setBackground(Color.WHITE);
 		main.setLayout(new BoxLayout(main, BoxLayout.X_AXIS));
 		
 		//TODO add to separate class
-		JPanel userProfile = new JPanel();
+		userProfile = new JPanel();
 		userProfile.setVisible(false);
 		userProfile.setBackground(Color.WHITE);
 		userProfile.setLayout(null);
@@ -173,7 +176,7 @@ public class MainFrame extends JFrame {
 		
 		//adding of Login Panel to main Panel
 		UserLogin UserLogin = new UserLogin(fontBtn, this);
-		JPanel UserLoginPane =UserLogin.init();
+		UserLoginPane =UserLogin.init();
 		main.add(UserLoginPane);
 		
 
@@ -239,5 +242,30 @@ public class MainFrame extends JFrame {
 	public void setKundenBtn(JButton kundenBtn) {
 		this.kundenBtn = kundenBtn;
 	}
+
+	public JPanel getUserProfile() {
+		return userProfile;
+	}
+
+	public void setUserProfile(JPanel userProfile) {
+		this.userProfile = userProfile;
+	}
+
+	public JPanel getMain() {
+		return main;
+	}
+
+	public void setMain(JPanel main) {
+		this.main = main;
+	}
+
+	public JPanel getUserLoginPane() {
+		return UserLoginPane;
+	}
+
+	public void setUserLoginPane(JPanel userLoginPane) {
+		UserLoginPane = userLoginPane;
+	}
+	
 	
 }

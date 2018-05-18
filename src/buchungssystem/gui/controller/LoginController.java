@@ -6,7 +6,9 @@ import java.awt.event.ActionListener;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.Icon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
@@ -35,9 +37,15 @@ public class LoginController implements Observer, ActionListener {
 	public void update(Observable model, Object arg) {
 		userLogin.getParentPane().getProfileBtn().setEnabled(true);
 		
+		userLogin.getParentPane().getUserLoginPane().setVisible(false);
+		userLogin.getParentPane().getUserProfile().setVisible(true);
+		JLabel testLabel = new JLabel("USER PROFILE");
+		testLabel.setBounds(50, 50, 100, 100);
+		userLogin.getParentPane().getUserProfile().add(testLabel);
+		userLogin.getParentPane().getProfileBtn().setBackground(Color.gray);
+		
 		//check permissions of a Current User 
 		if ( Boolean.valueOf(session.getPermissions().getProperty("readCustomerTable")) ) {
-			
 			userLogin.getParentPane().getKundenBtn().setEnabled(true);
 		}
 		
