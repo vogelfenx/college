@@ -11,10 +11,11 @@ import buchungssystem.models.roles.CurrentUser;
 public class Authorization {
 	Properties permissions = new Properties();
 	CurrentUser currentUser;
+	User user;
 	
 	public Authorization(String login, String passwd) {
 		UserDB userDB = new UserDB();
-		User user = userDB.getByLogin(login, passwd);
+		user = userDB.getByLogin(login, passwd);
 		if (user != null && user.isValid() == true) {
 			EmployeeDB employeeDB = new EmployeeDB();
 			Employee employee = employeeDB.getById(user.getEmployeeID());
@@ -52,6 +53,14 @@ public class Authorization {
 
 	public void setCurrentUser(CurrentUser admin) {
 		this.currentUser = admin;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 	
 	

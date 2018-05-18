@@ -32,6 +32,7 @@ public class User extends Model {
 
 	public User(Long id) {
 		super(id);
+		super.setChanged();
 	}
 
 	public Long getUserRoleID() {
@@ -40,6 +41,7 @@ public class User extends Model {
 
 	public void setUserRoleID(Long userRoleID) {
 		this.userRoleID = userRoleID;
+		super.setChanged();
 	}
 
 	public String getLogin() {
@@ -48,6 +50,7 @@ public class User extends Model {
 
 	public void setLogin(String login) {
 		this.login = login;
+		super.setChanged();
 	}
 
 	public String getPassword() {
@@ -56,6 +59,7 @@ public class User extends Model {
 
 	public void setPassword(String password) {
 		this.password = password;
+		super.setChanged();
 	}
 
 	public Long getEmployeeID() {

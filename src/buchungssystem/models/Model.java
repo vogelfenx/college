@@ -1,12 +1,13 @@
 package buchungssystem.models;
 
 import java.util.GregorianCalendar;
+import java.util.Observable;
 
 /*
  * Hier sind die Eigenschaften deklariert, die bei allen Entity(Klassen) gleich sind.
  */
 
-public class Model {
+public class Model extends Observable {
 	
 	private Long id;
 	//DONE implementation of lastID properties in case of modifying the object in DB
@@ -28,6 +29,7 @@ public class Model {
 	}
 	public void setId(Long id) {
 		this.id = id;
+		setChanged();
 	}
 
 	public Long getLastID() {

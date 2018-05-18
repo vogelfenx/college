@@ -28,13 +28,28 @@ import javax.swing.border.LineBorder;
 import javax.swing.JToolBar;
 import javax.swing.JLabel;
 import javax.swing.border.TitledBorder;
+
+import buchungssystem.gui.controller.LoginController;
+import tests.Authorization;
+
 import javax.swing.UIManager;
 import java.awt.event.ActionListener;
+import java.util.Observable;
+import java.util.Observer;
 import java.awt.event.ActionEvent;
+import java.awt.GridLayout;
+import javax.swing.JTextField;
 
 public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
+	protected Font fontBtn;
+	private JButton backBtn;
+	private JPanel menu;
+	private JButton profileBtn;
+	private JPanel header;
+	private JButton mitarbeiterBtn;
+	private JButton kundenBtn;
 
 	/**
 	 * Launch the application.
@@ -79,7 +94,7 @@ public class MainFrame extends JFrame {
 		contentPane.setLayout(new BorderLayout(20, 5));
 		
 		//styles variable
-		Font fontBtn = new Font("Arial", Font.PLAIN, 20);
+		fontBtn = new Font("Arial", Font.PLAIN, 20);
 		
 		/*
 		 * Definition of 4 panels(top, left, bottom, right) according to BorderLayout
@@ -89,12 +104,12 @@ public class MainFrame extends JFrame {
 		 * 
 		 */
 		
-		JPanel header = new JPanel();
+		header = new JPanel();
 		header.setAlignmentX(Component.LEFT_ALIGNMENT);
 		contentPane.add(header, BorderLayout.NORTH);
 		header.setLayout(new FlowLayout(FlowLayout.LEADING, 25, 5));
 		
-		JButton backBtn = new JButton("Zur\u00FCck");
+		backBtn = new JButton("Zur\u00FCck");
 		header.add(backBtn);
 		backBtn.setBackground(Color.LIGHT_GRAY);         
 		backBtn.setForeground(Color.BLACK);              
@@ -102,7 +117,7 @@ public class MainFrame extends JFrame {
 		backBtn.setFont(fontBtn);                        
 		backBtn.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		
-		JPanel menu = new JPanel();
+		menu = new JPanel();
 		contentPane.add(menu, BorderLayout.WEST);
 		menu.setForeground(Color.BLACK);
 		menu.setBorder(new LineBorder(Color.ORANGE, 1, true));
@@ -116,15 +131,15 @@ public class MainFrame extends JFrame {
 		//Creating of an invisible component that's specified a size(X_AXIS) of the box
 		menu.add(Box.createRigidArea(new Dimension(300, 0)));
 		
-		JButton profileBtn = new JButton("User Profile");
+		setProfileBtn(new JButton("User Profile"));
 		box.add(Box.createVerticalStrut(20));
-		box.add(profileBtn);
+		box.add(getProfileBtn());
 		
-		JButton mitarbeiterBtn = new JButton("Mitarbeiter");
+		mitarbeiterBtn = new JButton("Mitarbeiter");
 		box.add(Box.createVerticalStrut(10));
 		box.add(mitarbeiterBtn);
 		
-		JButton kundenBtn = new JButton("Kunden");
+		kundenBtn = new JButton("Kunden");
 		box.add(Box.createVerticalStrut(10));
 		box.add(kundenBtn);
 		
@@ -135,24 +150,94 @@ public class MainFrame extends JFrame {
 				c.setForeground(Color.BLACK);
 				c.setMaximumSize(new Dimension(250, 50));
 				c.setFont(fontBtn);
+				c.setEnabled(false);
 				((JButton) c).setAlignmentX(Component.CENTER_ALIGNMENT);
 			}
 		}
 		
-		//box adding to menu Pane
+		//adding of the box to menu Panel
 		menu.add(box);
 		
 		JPanel main = new JPanel();
 		main.setBorder(new TitledBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "", TitledBorder.LEADING, TitledBorder.TOP, null, new Color(64, 64, 64)), "", TitledBorder.CENTER, TitledBorder.ABOVE_TOP, null, Color.DARK_GRAY));
 		contentPane.add(main, BorderLayout.CENTER);
 		main.setBackground(Color.WHITE);
-		main.setLayout(new FlowLayout(FlowLayout.CENTER, 50, 50));
+		main.setLayout(new BoxLayout(main, BoxLayout.X_AXIS));
 		
+		//TODO add to separate class
 		JPanel userProfile = new JPanel();
+		userProfile.setVisible(false);
+		userProfile.setBackground(Color.WHITE);
+		userProfile.setLayout(null);
 		main.add(userProfile);
+		
+		//adding of Login Panel to main Panel
+		UserLogin UserLogin = new UserLogin(fontBtn, this);
+		JPanel UserLoginPane =UserLogin.init();
+		main.add(UserLoginPane);
+		
+
+
 		
 		JPanel footer = new JPanel();
 		footer.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "@2018", TitledBorder.CENTER, TitledBorder.BELOW_TOP, null, new Color(0, 0, 0)));
 		contentPane.add(footer, BorderLayout.SOUTH);
 	}
+
+	public JButton getProfileBtn() {
+		return profileBtn;
+	}
+
+	public void setProfileBtn(JButton profileBtn) {
+		this.profileBtn = profileBtn;
+	}
+
+	public Font getFontBtn() {
+		return fontBtn;
+	}
+
+	public void setFontBtn(Font fontBtn) {
+		this.fontBtn = fontBtn;
+	}
+
+	public JButton getBackBtn() {
+		return backBtn;
+	}
+
+	public void setBackBtn(JButton backBtn) {
+		this.backBtn = backBtn;
+	}
+
+	public JPanel getMenu() {
+		return menu;
+	}
+
+	public void setMenu(JPanel menu) {
+		this.menu = menu;
+	}
+
+	public JPanel getHeader() {
+		return header;
+	}
+
+	public void setHeader(JPanel header) {
+		this.header = header;
+	}
+
+	public JButton getMitarbeiterBtn() {
+		return mitarbeiterBtn;
+	}
+
+	public void setMitarbeiterBtn(JButton mitarbeiterBtn) {
+		this.mitarbeiterBtn = mitarbeiterBtn;
+	}
+
+	public JButton getKundenBtn() {
+		return kundenBtn;
+	}
+
+	public void setKundenBtn(JButton kundenBtn) {
+		this.kundenBtn = kundenBtn;
+	}
+	
 }
