@@ -10,7 +10,7 @@ import buchungssystem.models.roles.CurrentUser;
 
 public class Authorization {
 	Properties permissions = new Properties();
-	CurrentUser currentUser;
+	static CurrentUser currentUser;
 	User user;
 	
 	public Authorization(String login, String passwd) {
@@ -47,7 +47,7 @@ public class Authorization {
 		this.permissions = permissions;
 	}
 
-	public CurrentUser getCurrentUser() {
+	public static CurrentUser getCurrentUser() {
 		return currentUser;
 	}
 

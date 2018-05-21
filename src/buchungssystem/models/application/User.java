@@ -32,7 +32,6 @@ public class User extends Model {
 
 	public User(Long id) {
 		super(id);
-		super.setChanged();
 	}
 
 	public Long getUserRoleID() {
@@ -68,6 +67,7 @@ public class User extends Model {
 
 	public void setEmployeeID(Long employeeID) {
 		this.employeeID = employeeID;
+		super.setChanged();
 	}
 
 	
@@ -85,6 +85,7 @@ public class User extends Model {
 
 	public void setUserRole(String userRole) {
 		this.userRole = userRole;
+		super.setChanged();
 	}
 
 	public GregorianCalendar getValidTill() {

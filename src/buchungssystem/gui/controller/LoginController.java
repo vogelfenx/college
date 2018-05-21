@@ -1,33 +1,29 @@
 package buchungssystem.gui.controller;
 
+import java.awt.Button;
 import java.awt.Color;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.Observable;
 import java.util.Observer;
 
-import javax.swing.Icon;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
+import javax.swing.*;
 
-import buchungssystem.gui.Login;
-import buchungssystem.gui.Menu;
-import buchungssystem.gui.UserLogin;
+import buchungssystem.gui.panels.UserLogin;
+import buchungssystem.gui.panels.UserProfile;
 import buchungssystem.models.application.User;
 import buchungssystem.models.roles.CurrentUser;
 import tests.Authorization;
 
 public class LoginController implements Observer, ActionListener, KeyListener {
 	
-	Authorization session;
+	/*
+	 * Checking if user exists or not
+	 */
+	
+	public static Authorization session;
 	JButton anmeldenBtn;
 	UserLogin userLogin;
+
 	User user;
 	
 	public LoginController(JButton anmeldenBtn, UserLogin userLogin) {
@@ -35,16 +31,32 @@ public class LoginController implements Observer, ActionListener, KeyListener {
 		this.userLogin = userLogin;
 	}
 	
-	//if observable model object changed -> perform this statement   
+	//The 'anmelden' button is invoke
+	private void buttonIsInvoke() {
+		session = new Authorization(userLogin.getLoginField().getText(), new String(userLogin.getPasswordField().getPassword()));	
+		user = session.getUser();
+		if (user == null) {
+			System.out.println("Password oder Login ist falsch");
+		} else {
+			user.addObserver(this);
+			user.notifyObservers();
+		}
+	}
+	
+	/*
+	 * If observable model object was changed -> perform this statement
+	 * Observable object is Model.java and User.java in buchungssystem.models 
+	 */
 	@Override
 	public void update(Observable model, Object arg) {
 		userLogin.getParentPane().getProfileBtn().setEnabled(true);
 		
-		userLogin.getParentPane().getUserLoginPane().setVisible(false);
+		//userLogin.getParentPane().getUserLoginPane().setVisible(false);
+		userLogin.getParentPane().getMain().remove(userLogin.getParentPane().getUserLoginPane());
+		userLogin.getParentPane().getMain().repaint();
+		
 		userLogin.getParentPane().getUserProfile().setVisible(true);
-		JLabel testLabel = new JLabel("USER PROFILE");
-		testLabel.setBounds(50, 50, 100, 100);
-		userLogin.getParentPane().getUserProfile().add(testLabel);
+		
 		userLogin.getParentPane().getProfileBtn().setBackground(Color.blue);
 		userLogin.getParentPane().getProfileBtn().setForeground(Color.WHITE);
 		
@@ -54,20 +66,18 @@ public class LoginController implements Observer, ActionListener, KeyListener {
 		}
 		
 		if ( Boolean.valueOf(session.getPermissions().getProperty("readEmployeeTable")) ) {
-			userLogin.getParentPane().getMitarbeiterBtn().setEnabled(true);
+			userLogin.getParentPane().getEmployeeBtn().setEnabled(true);
 		}
+		
+		//HIER KANN ICH User Profile befüllen
+		UserProfile userProfile = (UserProfile) userLogin.getParentPane().getUserProfile();
+		userProfile.setLoginName(user.getLogin());
 		
 	}
 
-	public void setSession(Authorization session) {
-		//observable was changed
-		this.session = session;
-	}
-
-	public Authorization getSession() {
-		return session;
-	}
-
+	/*
+	 *Actions was performed 
+	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		buttonIsInvoke();
@@ -81,25 +91,21 @@ public class LoginController implements Observer, ActionListener, KeyListener {
 	}
 
 	@Override
-	public void keyReleased(KeyEvent e) {
-		
-	}
+	public void keyReleased(KeyEvent arg0) {}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		
-	}
+	public void keyTyped(KeyEvent e) {}
 	
-	//check if user exists or not
-	private void buttonIsInvoke() {
-		session = new Authorization(userLogin.getLoginField().getText(), new String(userLogin.getPasswordField().getPassword()));	
-		user = session.getUser();
-		if (user == null) {
-			System.out.println("Password oder Login ist falsch");
-		} else {
-			user.addObserver(this);
-			user.notifyObservers();
-		}
+	
+	/*
+	 *getters & setters 
+	 */
+	public void setSession(Authorization session) {
+		this.session = session;
+	}
+
+	public Authorization getSession() {
+		return session;
 	}
 	
 }

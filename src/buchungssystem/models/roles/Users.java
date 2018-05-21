@@ -185,12 +185,12 @@ public class Users {
 		
 		employees = employeeDB.getAll();
 		
-		if(employees.size() != 0) {
-			for (Employee employee : employees) {
-				System.out.println(employee.toString());
-				System.out.println("------");
-			}
-		}
+		//if(employees.size() != 0) {
+		//	for (Employee employee : employees) {
+		//		System.out.println(employee.toString());
+		//		System.out.println("------");
+		//	}
+		//}
 		
 		return employees;
 	}
