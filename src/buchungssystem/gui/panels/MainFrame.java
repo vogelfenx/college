@@ -15,6 +15,7 @@ import java.awt.Toolkit;
 import javax.swing.JSplitPane;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import java.awt.Component;
@@ -46,7 +47,7 @@ import java.awt.CardLayout;
 public class MainFrame extends JFrame {
 
 	private JPanel contentPane;
-	protected Font fontBtn;
+	public static Font fontBtn;
 	private JButton backBtn;
 	private JPanel menu;
 	private JButton profileBtn;
@@ -59,6 +60,7 @@ public class MainFrame extends JFrame {
 	private JPanel userLoginPane;
 	private JButton warenBtn;
 	private Component verticalStrut;
+	public static Thread thread;
 
 	/**
 	 * Launch the application.
@@ -209,6 +211,24 @@ public class MainFrame extends JFrame {
 		JPanel footer = new JPanel();
 		footer.setBorder(new TitledBorder(UIManager.getBorder("TitledBorder.border"), "Warensystem@2018", TitledBorder.CENTER, TitledBorder.BELOW_TOP, null, new Color(0, 0, 0)));
 		contentPane.add(footer, BorderLayout.SOUTH);
+		
+		thread = new Thread((Runnable) employeePane);
+		
+	}
+	
+	public static void popupWindow(String messageText, int x, int y, Color textColor) {
+		JDialog message = new JDialog();
+		message.getContentPane().setLayout(new BorderLayout());
+		
+		JLabel messageLabel = new JLabel(messageText);
+		messageLabel.setFont(MainFrame.fontBtn);
+		messageLabel.setForeground(textColor);
+		messageLabel.setHorizontalTextPosition(JLabel.CENTER);
+		
+		message.getContentPane().add(messageLabel, BorderLayout.CENTER);
+		message.setSize(x, y);
+		message.setLocationRelativeTo(null);
+		message.setVisible(true);
 	}
 
 	public JButton getProfileBtn() {
