@@ -15,6 +15,7 @@ public class CurrentUser extends Users {
 		permissions.setProperty("addCustomer", "true");
 		permissions.setProperty("updateCustomer", "true");
 		permissions.setProperty("deleteCustomer", "true");
+		permissions.setProperty("importCustomers", "true");
 		//user
 		permissions.setProperty("readUserTable", "true");
 		permissions.setProperty("addUser", "true");

@@ -27,22 +27,10 @@ public class AddEmployeeDialog extends JDialog {
 	private JTextField email;
 
 	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			AddEmployeeDialog dialog = new AddEmployeeDialog();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Create the dialog.
+	 * @param employee 
 	 */
-	public AddEmployeeDialog() {
+	public AddEmployeeDialog(buchungssystem.gui.panels.Employee parent) {
 		setBounds(100, 100, 450, 500);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -51,25 +39,25 @@ public class AddEmployeeDialog extends JDialog {
 		{
 			JLabel firstNameLabel = new JLabel("Vorname");
 			firstNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-			firstNameLabel.setBounds(95, 128, 102, 16);
+			firstNameLabel.setBounds(80, 128, 102, 16);
 			contentPanel.add(firstNameLabel);
 		}
 		{
 			JLabel nachNameLabel = new JLabel("Nachname");
 			nachNameLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-			nachNameLabel.setBounds(95, 177, 102, 16);
+			nachNameLabel.setBounds(80, 177, 102, 16);
 			contentPanel.add(nachNameLabel);
 		}
 		{
 			JLabel emailLabel = new JLabel("Email");
 			emailLabel.setFont(new Font("Tahoma", Font.PLAIN, 20));
-			emailLabel.setBounds(95, 225, 102, 16);
+			emailLabel.setBounds(80, 225, 102, 16);
 			contentPanel.add(emailLabel);
 		}
 		{
 			firstName = new JTextField();
 			firstName.setFont(new Font("Tahoma", Font.PLAIN, 20));
-			firstName.setBounds(223, 121, 140, 31);
+			firstName.setBounds(208, 121, 171, 31);
 			contentPanel.add(firstName);
 			firstName.setColumns(10);
 		}
@@ -77,14 +65,14 @@ public class AddEmployeeDialog extends JDialog {
 			nachName = new JTextField();
 			nachName.setFont(new Font("Tahoma", Font.PLAIN, 20));
 			nachName.setColumns(10);
-			nachName.setBounds(223, 170, 140, 31);
+			nachName.setBounds(208, 170, 171, 31);
 			contentPanel.add(nachName);
 		}
 		{
 			email = new JTextField();
 			email.setFont(new Font("Tahoma", Font.PLAIN, 20));
 			email.setColumns(10);
-			email.setBounds(223, 214, 140, 31);
+			email.setBounds(208, 214, 171, 31);
 			contentPanel.add(email);
 		}
 		{
@@ -95,6 +83,8 @@ public class AddEmployeeDialog extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 
+					private boolean retrunCode;
+
 					public void actionPerformed(ActionEvent e) {
 						if (!getFirstName().getText().equals("") && !getNachName().getText().equals("") && !getEmail().getText().equals("")) {
 							Employee employee = new Employee();
@@ -102,12 +92,22 @@ public class AddEmployeeDialog extends JDialog {
 							employee.setLastName(getNachName().getText());
 							employee.setEmail(getEmail().getText());
 							
-							Authorization.getCurrentUser().addEmployeeToDB(employee.getFirstName(), employee.getLastName(), employee.getEmail());
+							retrunCode = Authorization.getCurrentUser().addEmployeeToDB(employee.getFirstName(), employee.getLastName(), employee.getEmail());
 							
 							//set AddEmployeeDialog Window invisible
 							setVisible(false);
 							
-							MainFrame.popupWindow("Mitarbeiter erfolgreich erstellt", 300, 100, Color.RED);
+							if (retrunCode == true) {
+								MainFrame.popupWindow("Mitarbeiter erfolgreich erstellt", 300, 100, Color.RED);
+							} else {
+								MainFrame.popupWindow("Mitarbeiter existiert bereits", 300, 100, Color.RED);
+							}
+							
+							//refresh the Table
+							//MainFrame.thread.start();
+							parent.initTable();
+							parent.getEmployeeTableModel().fireTableDataChanged();
+							
 							
 						} else {
 							MainFrame.popupWindow("Bitte alle Felder ausfüllen", 300, 100, Color.RED);
@@ -122,6 +122,11 @@ public class AddEmployeeDialog extends JDialog {
 			}
 			{
 				JButton cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						setVisible(false);
+					}
+				});
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}

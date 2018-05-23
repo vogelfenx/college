@@ -3,6 +3,7 @@ package buchungssystem.gui.panels;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,14 +11,19 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableColumn;
 
 import buchungssystem.gui.controller.LoginController;
 import buchungssystem.gui.controller.MainMenuController;
+import buchungssystem.models.application.User;
 import buchungssystem.models.roles.CurrentUser;
 import tests.Authorization;
 import org.eclipse.wb.swing.FocusTraversalOnArray;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.awt.event.ActionEvent;
 import java.awt.FlowLayout;
 
@@ -34,7 +40,7 @@ public class Employee extends JPanel implements Observer, Runnable {
 	JButton updateEmployee;
 	
 	JTable employeeTable;
-	EmployeeTableModel employeeTableModel;
+	private EmployeeTableModel employeeTableModel;
 	JScrollPane employeeTableScrool;
 	private JPanel fillerRight;
 
@@ -42,6 +48,8 @@ public class Employee extends JPanel implements Observer, Runnable {
 	private JPanel tablePanel;
 	
 	JDialog addEmployeeDialog;
+	private JButton btnImport;
+	private JButton btnUserAnlegen;
 	
 	
 	public Employee() {
@@ -55,74 +63,127 @@ public class Employee extends JPanel implements Observer, Runnable {
 		addEmployee = new JButton("Hinzufügen");
 		addEmployee.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				//TODO open JDialog
+				//DONE open JDialog
 				addEmployeeDialog.setVisible(true);
-				
-				//refresh the Table
-				initTable();
-				MainFrame.thread.start();
-				
 			}
 		});
 		deleteEmployee = new JButton("Löschen");
+		deleteEmployee.addActionListener(new ActionListener() {
+			private boolean returnCode;
+
+			public void actionPerformed(ActionEvent e) {
+				System.out.println(">>>> " + employeeTable.getValueAt(employeeTable.getSelectedRow(), 0) + " <<<<<<");
+				Long id = (Long) employeeTable.getValueAt(employeeTable.getSelectedRow(), 6);
+				buchungssystem.models.employee.Employee employee = new buchungssystem.models.employee.Employee(id);
+				String firstName = (String) employeeTable.getValueAt(employeeTable.getSelectedRow(), 0);
+				if ( !firstName.equals("Superadmin") ) {
+					returnCode = currentUser.SoftDeleteEmployee(employee);
+				} else {
+					MainFrame.popupWindow("den Admin kann man nict löschen", 400, 100, Color.RED);
+				}
+				
+				if (returnCode) {
+					initTable();
+					getEmployeeTableModel().fireTableDataChanged();
+					MainFrame.popupWindow("Mitarbeiter erfolgreich gelöscht", 300, 100, Color.RED);
+				}
+			}
+		});
 		updateEmployee = new JButton("Ändern");
-		
+		btnImport = new JButton("Import");
+		btnImport.addActionListener(new ActionListener() {
+			private boolean returnCode;
+
+			public void actionPerformed(ActionEvent arg0) {
+				JFileChooser jFileChooser = new JFileChooser();
+				jFileChooser.setFileFilter(new FileNameExtensionFilter(null, "csv"));
+				jFileChooser.showOpenDialog(null);
+				File file = jFileChooser.getSelectedFile();
+				
+				int lastRowCount = getEmployeeTableModel().getRowCount();
+				
+				if ( file != null ) {
+					returnCode = currentUser.importEmployeesToDB(file.getPath());
+					initTable();
+				}
+				int RowCountNow = getEmployeeTableModel().getRowCount();
+				System.out.println(">>>>>>>>>>>>>>>" + RowCountNow + " | " + lastRowCount);
+				if ( lastRowCount < RowCountNow  ) {
+					getEmployeeTableModel().fireTableDataChanged();
+					MainFrame.popupWindow("Mitarbeiter erfolgreich importiert", 300, 100, Color.RED);
+				}
+				
+			}
+		});
 		Box actionsBox = Box.createHorizontalBox();
 		
 		actionsBox.add(addEmployee);
 		actionsBox.add(deleteEmployee);
 		actionsBox.add(updateEmployee);
+		actionsBox.add(btnImport);
 		
 		actionspanel.add(actionsBox);
 		
 		tablePanel = new JPanel();
 		add(tablePanel, BorderLayout.CENTER);
 		tablePanel.setLayout(new BoxLayout(tablePanel, BoxLayout.X_AXIS));
+		
 		employeeTable = new JTable(employeeTableModel);
+		employeeTable.setFont(MainFrame.fontBtn);
+		employeeTable.setRowHeight(30);
+		employeeTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+		
 		employeeTableScrool = new JScrollPane(employeeTable);
+		
 		tablePanel.add(employeeTableScrool);
 		add(actionspanel, BorderLayout.NORTH);
-		//actionspanel.setFocusTraversalPolicy(new FocusTraversalOnArray(new Component[]{addEmployee, deleteEmployee, updateEmployee}));
 		
 		fillerRight = new JPanel();
 		add(fillerRight, BorderLayout.EAST);
 		fillerRight.setLayout(new BoxLayout(fillerRight, BoxLayout.Y_AXIS));
+		
 		Box fillerBox = Box.createVerticalBox();
 		fillerBox.add(Box.createRigidArea(new Dimension(100,0)));
+
+		btnUserAnlegen = new JButton("User anlegen");
+		
+		fillerBox.add(btnUserAnlegen);
 		fillerRight.add(fillerBox);
 		
 		/*
 		 * Employee adding Dialog
 		 */
-		addEmployeeDialog = new AddEmployeeDialog();
+		addEmployeeDialog = new AddEmployeeDialog(this);
 		//center relative to table
 		addEmployeeDialog.setLocationRelativeTo(tablePanel);
 		
-		
-		
-		//specifying of styles of all buttons in the box 
-		for (Component c : actionsBox.getComponents()) {
-			if (c.getClass().equals(JButton.class)) {
-				c.setBackground(Color.LIGHT_GRAY);
-				c.setForeground(Color.BLACK);
-				c.setMaximumSize(new Dimension(250, 50));
-				c.setFont(MainFrame.fontBtn);
-				c.setEnabled(false);
-				((JButton) c).setAlignmentX(Component.CENTER_ALIGNMENT);
-			}
-		}
+		//set styles for Buttons
+		stylizeButtons(actionsBox);
+		stylizeButtons(fillerBox);
 		
 	}
 	
+	//getters && setters
 	
-	
-	/*
-	 * Description of Employee Model Table
-	 */
 	
 	public JButton getAddEmployee() {
 		return addEmployee;
+	}
+
+	public JButton getBtnImport() {
+		return btnImport;
+	}
+
+	public void setBtnImport(JButton btnImport) {
+		this.btnImport = btnImport;
+	}
+
+	public JButton getBtnUserAnlegen() {
+		return btnUserAnlegen;
+	}
+
+	public void setBtnUserAnlegen(JButton btnUserAnlegen) {
+		this.btnUserAnlegen = btnUserAnlegen;
 	}
 
 	public void setAddEmployee(JButton addEmployee) {
@@ -145,11 +206,23 @@ public class Employee extends JPanel implements Observer, Runnable {
 		this.updateEmployee = updateEmployee;
 	}
 
+	public EmployeeTableModel getEmployeeTableModel() {
+		return employeeTableModel;
+	}
 
+	public void setEmployeeTableModel(EmployeeTableModel employeeTableModel) {
+		this.employeeTableModel = employeeTableModel;
+	}
 
-	private class EmployeeTableModel extends AbstractTableModel {
+	
+	
+	/*
+	 * Description of Employee Model Table
+	 */
 
-		int columnCount = 2;
+	public class EmployeeTableModel extends AbstractTableModel {
+
+		int columnCount = 7;
 		private ArrayList<Object []> dataArrayList;
 		
 		public EmployeeTableModel() {
@@ -189,6 +262,11 @@ public class Employee extends JPanel implements Observer, Runnable {
 			switch(columnIndex) {
 			case 0: return "Vorname";
 			case 1: return "Nachname";
+			case 2: return "E-mail";
+			case 3: return "Telefon";
+			case 4: return "Funktion";
+			case 5: return "Login";
+			case 6: return "ID";
 			}
 			return null;
 		}
@@ -199,9 +277,40 @@ public class Employee extends JPanel implements Observer, Runnable {
 
 		public void setDataArrayList(ArrayList<Object []> list) {
 			this.dataArrayList = list;
+		}	
+	}
+	
+	public void initTable() {
+		/*
+		 	1. clear the Table
+		 	2. Get Employees from DB as a List 
+		 	3. Pass the list to array
+		 	4. Add it to JTable Model
+		*/
+	
+		employeeTableModel.clearTable();
+		for (buchungssystem.models.employee.Employee employee : currentUser.getAllEmployees()) {
+			Object [] row = new Object[7];
+			if (employee.isValid() == true) {
+				row[0] = employee.getFirstName();
+				row[1] = employee.getLastName();
+				row[2] = employee.getEmail();
+				row[3] = employee.getPhoneNumber();			
+				row[4] = currentUser.getEmployeeRoleByID(employee.getRoleID()).getRole();
+				if (employee.getUserID() != null) {
+					row[5] = currentUser.getUserByID(employee.getUserID()).getLogin();
+				} else {
+					row[5] = "keinen User angelegt";
+				}
+				row[6] = employee.getId();
+				employeeTableModel.addRow(row);
+			}
+
 		}
-		
-		
+		//hide the Column with the Employee ID
+		employeeTable.getColumnModel().getColumn(6).setMinWidth(0);
+		employeeTable.getColumnModel().getColumn(6).setMaxWidth(0);
+		//employeeTable.removeColumn(employeeTable.getColumnModel().getColumn(6));
 	}
 
 	@Override
@@ -230,40 +339,47 @@ public class Employee extends JPanel implements Observer, Runnable {
 			((Employee) ((MainMenuController) o).getjPane()).getUpdateEmployee().setEnabled(true);
 		}
 		
+		if ( Boolean.valueOf(LoginController.session.getPermissions().getProperty("addUser")) ) {
+			((Employee) ((MainMenuController) o).getjPane()).getBtnUserAnlegen().setEnabled(true);
+		}
+		
+		if ( Boolean.valueOf(LoginController.session.getPermissions().getProperty("importCustomers")) ) {
+			((Employee) ((MainMenuController) o).getjPane()).getBtnImport().setEnabled(true);
+		}
+		
+		//update the table of employees
 		initTable();
 		
 	}
 	
-	public void initTable() {
-		/*
-	 	1. clear the Table
-	 	2. Get Employees from DB as a List 
-	 	3. Pass the list to array
-	 	4. Add it to JTable Model
-	 */
-	
-	employeeTableModel.clearTable();
-	for (buchungssystem.models.employee.Employee employee : currentUser.getAllEmployees()) {
-		Object [] row = new Object[4];
-		if (employee.isValid() == true) {
-			row[0] = employee.getFirstName();
-			row[1] = employee.getLastName();
-			employeeTableModel.addRow(row);
+	public void stylizeButtons(Container container) {
+		//specifying of styles of all buttons in the box 
+		for (Component c : container.getComponents()) {
+			if (c.getClass().equals(JButton.class)) {
+				c.setBackground(Color.LIGHT_GRAY);
+				c.setForeground(Color.BLACK);
+				c.setMaximumSize(new Dimension(250, 50));
+				c.setFont(MainFrame.fontBtn);
+				c.setEnabled(false);
+				((JButton) c).setAlignmentX(Component.CENTER_ALIGNMENT);
+			}
 		}
+	}
 
-	}
-	}
-	
 	public void run() {
+		/*
 		while (true) {
 			try {
 				System.out.println("test");
+				initTable();
+				employeeTable.columnAdded(null);
 				repaint();
 				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
+		*/
 	}
 
 }

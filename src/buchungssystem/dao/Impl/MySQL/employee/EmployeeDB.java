@@ -55,10 +55,10 @@ public class EmployeeDB implements IEmployeeDao{
 				Long departmentID = resultSet.wasNull() ? null: resultSet.getLong(2);                            
 				                                                                                            
 				resultSet.getLong(3);                                                                       
-				Long roleID = resultSet.wasNull() ? null : resultSet.getLong(2);
+				Long roleID = resultSet.wasNull() ? null : resultSet.getLong(3);
 				
 				resultSet.getLong(4);                                                                       
-				Long userID = resultSet.wasNull() ? null : resultSet.getLong(1);
+				Long userID = resultSet.wasNull() ? null : resultSet.getLong(4);
 				                       				                                                                                            
 				resultSet.getString(5);                                                                     
 				String firstName = resultSet.wasNull() ? null : resultSet.getString(5);                     

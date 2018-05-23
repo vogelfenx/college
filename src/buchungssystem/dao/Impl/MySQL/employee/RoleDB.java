@@ -2,6 +2,7 @@ package buchungssystem.dao.Impl.MySQL.employee;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -28,8 +29,30 @@ public class RoleDB implements IRole {
 
 	@Override
 	public Role getById(Long id) {
-		// TODO implementation of a getting a new role of employees by id
-		return null;
+		// DONE implementation of a getting a new role of employees by id
+		
+		Role role = new Role(id);
+		
+		ResultSet resultSet;
+		String sqlQuery = "SELECT role FROM Role where roleID=?";
+		
+		PreparedStatement sqlStmt;
+		try {
+			sqlStmt = mysqlConnect.prepareStatement(sqlQuery);
+			sqlStmt.setLong(1, id);
+			resultSet = sqlStmt.executeQuery();
+			resultSet.next();
+			
+			resultSet.getString(1);
+			String roleTitle = resultSet.wasNull() ? null : resultSet.getString(1);
+			
+			role.setRole(roleTitle);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return role;
 	}
 
 	@Override
@@ -39,7 +62,7 @@ public class RoleDB implements IRole {
 		boolean status = false; 
 		
 		//initialize connection
-		Connection mysqlConnect = conn.init();
+		//Connection mysqlConnect = conn.init();
 		
 		String sqlQuery = "INSERT INTO Role (role) VALUE (?)";
 		

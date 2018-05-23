@@ -29,7 +29,7 @@ public class UserRoleDB implements IUserRole {
 	@Override
 	public UserRole getById(Long id) {
 		// DONE implementation of getting a new user role by ID
-		Connection mysqlConnect = conn.init();
+		//Connection mysqlConnect = conn.init();
 		
 		UserRole userRole = new UserRole(id);
 		
@@ -60,7 +60,7 @@ public class UserRoleDB implements IUserRole {
 		boolean status;
 		
 		//initialize connection
-		Connection mysqlConnect = conn.init();
+		//Connection mysqlConnect = conn.init();
 		
 		String sqlQuery = "INSERT INTO UserRole(role) VALUE(?)";
 		try {

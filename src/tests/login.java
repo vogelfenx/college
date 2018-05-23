@@ -79,8 +79,8 @@ public class login {
 //			status = currentUser.SoftDeleteEmployee(employee);
 			
 			//get User by ID
-//			User user = currentUser.getUserByID((long) 7);
-//			System.out.println(user.toString());
+			User user = currentUser.getUserByID((long) 7);
+			System.out.println(user.toString());
 			
 			//get Department by ID
 //			Department department = currentUser.getDepartmentByID((long) 12);

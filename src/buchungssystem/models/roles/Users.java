@@ -278,6 +278,13 @@ public class Users {
 		return productCategories;	
 	}
 	
+	public Role getEmployeeRoleByID(Long id) {
+		Role role;
+		RoleDB roleDB = new RoleDB();
+		role = roleDB.getById(id);
+		return role;
+	}
+	
 	//getter&setter
 	public String getLogin() {
 		return login;
