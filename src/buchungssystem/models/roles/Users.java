@@ -285,6 +285,27 @@ public class Users {
 		return role;
 	}
 	
+	public List<UserRole> getAllUserRole() {
+		List<UserRole> userRoles = new ArrayList<UserRole>();
+		UserRoleDB userRoleDB = new UserRoleDB();
+		userRoles = userRoleDB.getAll();
+		return userRoles;
+	}
+	
+	public User getUserByLogin(String login) {
+		User user = new User();
+		UserDB userDB = new UserDB();
+		user = userDB.getByLogin(login);
+		return user;
+	}
+	
+	public UserRole getUserRoleByID(Long id) {
+		UserRole userRole = new UserRole(id);
+		UserRoleDB userRoleDB = new UserRoleDB();
+		userRoleDB.getById(id);
+		return userRole;
+	}
+	
 	//getter&setter
 	public String getLogin() {
 		return login;

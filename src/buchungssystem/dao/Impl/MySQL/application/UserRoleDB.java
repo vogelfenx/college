@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import buchungssystem.dao.Impl.MySQL.DBconnection;
@@ -22,13 +23,35 @@ public class UserRoleDB implements IUserRole {
 
 	@Override
 	public List<UserRole> getAll() {
-		// TODO view all users role's in the system
-		return null;
+		// DONE view all users role's in the system
+		
+		List<UserRole> userRoles = new ArrayList<>();
+		UserRole role;
+		ResultSet resultSet = null;
+		String sqlQuery = "SELECT userRoleID, "
+				+ "role FROM UserRole";
+		try {
+			PreparedStatement sqlStmt = mysqlConnect.prepareStatement(sqlQuery);
+			resultSet = sqlStmt.executeQuery();
+			while (resultSet.next()) {
+				Long userRoleID = resultSet.getLong(1);
+				
+				resultSet.getString(2);
+				String roleTitle = resultSet.wasNull() ? null : resultSet.getString(2);
+				
+				role = new UserRole(userRoleID);
+				role.setRole(roleTitle);
+				userRoles.add(role);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return userRoles;
 	}
 
 	@Override
 	public UserRole getById(Long id) {
-		// DONE implementation of getting a new user role by ID
+		// DONE implementation of getting an user role by ID
 		//Connection mysqlConnect = conn.init();
 		
 		UserRole userRole = new UserRole(id);

@@ -120,7 +120,12 @@ public class MainFrame extends JFrame {
 		contentPane.add(header, BorderLayout.NORTH);
 		header.setLayout(new FlowLayout(FlowLayout.LEADING, 25, 5));
 		
-		backBtn = new JButton("Zur\u00FCck");
+		backBtn = new JButton("Exit");
+		backBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(1);
+			}
+		});
 		header.add(backBtn);
 		backBtn.setBackground(Color.LIGHT_GRAY);         
 		backBtn.setForeground(Color.BLACK);              

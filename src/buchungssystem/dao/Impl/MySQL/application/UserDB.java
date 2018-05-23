@@ -266,4 +266,36 @@ public class UserDB implements IUser{
 		return false;
 	}
 
+	public User getByLogin(String login) {
+		User user = new User();
+		ResultSet resultSet;
+		String sqlQuery = "select userID, "
+				+ "userRoleID, "
+				+ "isValid from user where login = ?";
+		try {
+			PreparedStatement sqlStmt = mysqlConnect.prepareStatement(sqlQuery);
+			sqlStmt.setString(1, login);
+			resultSet = sqlStmt.executeQuery();
+			resultSet.next();
+			
+			Long userID = resultSet.getLong(1);
+			
+			resultSet.getLong(2);
+			Long userRoleID = resultSet.wasNull() ? null : resultSet.getLong(2);
+			
+			resultSet.getBoolean(3);
+			boolean isValid = resultSet.wasNull() ? null : resultSet.getBoolean(3);
+			
+			user.setId(userID);
+			user.setUserRoleID(userRoleID);
+			user.setValid(isValid);
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return user;
+	}
+
 }

@@ -13,6 +13,10 @@ public class UserRole extends Model {
 		this.role = role;
 	}
 
+	public UserRole() {
+	
+	}
+
 	public String getRole() {
 		return role;
 	}

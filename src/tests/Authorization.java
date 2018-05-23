@@ -3,8 +3,10 @@ package tests;
 import java.util.Properties;
 
 import buchungssystem.dao.Impl.MySQL.application.UserDB;
+import buchungssystem.dao.Impl.MySQL.application.UserRoleDB;
 import buchungssystem.dao.Impl.MySQL.employee.EmployeeDB;
 import buchungssystem.models.application.User;
+import buchungssystem.models.application.UserRole;
 import buchungssystem.models.employee.Employee;
 import buchungssystem.models.roles.CurrentUser;
 
@@ -15,14 +17,17 @@ public class Authorization {
 	
 	public Authorization(String login, String passwd) {
 		UserDB userDB = new UserDB();
+		UserRoleDB userRoleDB = new UserRoleDB();
+		UserRole userRole = new UserRole();
+		
 		user = userDB.getByLogin(login, passwd);
+		userRole = userRoleDB.getById(user.getUserRoleID());
+		
 		if (user != null && user.isValid() == true) {
 			EmployeeDB employeeDB = new EmployeeDB();
 			Employee employee = employeeDB.getById(user.getEmployeeID());
 			if (employee != null) {
-				System.out.println(user.toString());
-				System.out.println(employee.toString());
-				initializePermission(employee.getRole());
+				initializePermission(userRole.getRole());
 			}
 		} else {
 			System.out.println("Den Benutzer gibt es nicht");

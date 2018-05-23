@@ -47,9 +47,13 @@ public class Employee extends JPanel implements Observer, Runnable {
 	private CurrentUser currentUser;
 	private JPanel tablePanel;
 	
-	JDialog addEmployeeDialog;
 	private JButton btnImport;
 	private JButton btnUserAnlegen;
+
+	private AddUserDialog addUserDialog;
+	JDialog addEmployeeDialog;
+	private EmployeeUpdateDialog employeeUpdateDialog;
+
 	
 	
 	public Employee() {
@@ -72,14 +76,14 @@ public class Employee extends JPanel implements Observer, Runnable {
 			private boolean returnCode;
 
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(">>>> " + employeeTable.getValueAt(employeeTable.getSelectedRow(), 0) + " <<<<<<");
+				//get id of selected Employee
 				Long id = (Long) employeeTable.getValueAt(employeeTable.getSelectedRow(), 6);
 				buchungssystem.models.employee.Employee employee = new buchungssystem.models.employee.Employee(id);
 				String firstName = (String) employeeTable.getValueAt(employeeTable.getSelectedRow(), 0);
 				if ( !firstName.equals("Superadmin") ) {
 					returnCode = currentUser.SoftDeleteEmployee(employee);
 				} else {
-					MainFrame.popupWindow("den Admin kann man nict löschen", 400, 100, Color.RED);
+					MainFrame.popupWindow("Admin kann nicht gelöscht werden", 400, 100, Color.RED);
 				}
 				
 				if (returnCode) {
@@ -90,6 +94,19 @@ public class Employee extends JPanel implements Observer, Runnable {
 			}
 		});
 		updateEmployee = new JButton("Ändern");
+		updateEmployee.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//get id of selected Employee
+				String firstName = (String) employeeTable.getValueAt(employeeTable.getSelectedRow(), 0);
+				Long employeeID = (Long) employeeTable.getValueAt(employeeTable.getSelectedRow(), 6);
+				if ( !firstName.equals("Superadmin") ) {
+					employeeUpdateDialog.setEmployeeID(employeeID);
+					employeeUpdateDialog.setVisible(true);
+				} else {
+					MainFrame.popupWindow("Superadmin darf nicht geändert werden", 400, 100, Color.RED);
+				}
+			}
+		});
 		btnImport = new JButton("Import");
 		btnImport.addActionListener(new ActionListener() {
 			private boolean returnCode;
@@ -146,6 +163,14 @@ public class Employee extends JPanel implements Observer, Runnable {
 		fillerBox.add(Box.createRigidArea(new Dimension(100,0)));
 
 		btnUserAnlegen = new JButton("User anlegen");
+		btnUserAnlegen.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				//open 'User anlegen' Dialog
+				Long employeeID = (Long) employeeTable.getValueAt(employeeTable.getSelectedRow(), 6);
+				addUserDialog.setEmployeeID(employeeID);
+				addUserDialog.setVisible(true);
+			}
+		});
 		
 		fillerBox.add(btnUserAnlegen);
 		fillerRight.add(fillerBox);
@@ -156,6 +181,17 @@ public class Employee extends JPanel implements Observer, Runnable {
 		addEmployeeDialog = new AddEmployeeDialog(this);
 		//center relative to table
 		addEmployeeDialog.setLocationRelativeTo(tablePanel);
+		
+		/*
+		 * adding of 'User anlegen' Dialog
+		 */
+		addUserDialog = new AddUserDialog(this);
+		addUserDialog.setLocationRelativeTo(tablePanel);
+		
+		/*
+		 *  adding of EmployeeUpdateDialog
+		 */
+		employeeUpdateDialog = new EmployeeUpdateDialog(this);
 		
 		//set styles for Buttons
 		stylizeButtons(actionsBox);
@@ -264,7 +300,7 @@ public class Employee extends JPanel implements Observer, Runnable {
 			case 1: return "Nachname";
 			case 2: return "E-mail";
 			case 3: return "Telefon";
-			case 4: return "Funktion";
+			case 4: return "Funktion als Mitarbeiter";
 			case 5: return "Login";
 			case 6: return "ID";
 			}

@@ -8,6 +8,7 @@ import java.util.Observer;
 
 import javax.swing.*;
 
+import buchungssystem.gui.panels.MainFrame;
 import buchungssystem.gui.panels.UserLogin;
 import buchungssystem.gui.panels.UserProfile;
 import buchungssystem.models.application.User;
@@ -36,7 +37,7 @@ public class LoginController implements Observer, ActionListener, KeyListener {
 		session = new Authorization(userLogin.getLoginField().getText(), new String(userLogin.getPasswordField().getPassword()));	
 		user = session.getUser();
 		if (user == null) {
-			System.out.println("Password oder Login ist falsch");
+			MainFrame.popupWindow("Kennwort oder Benutzername sind falsch!", 400, 100, Color.RED);
 		} else {
 			user.addObserver(this);
 			user.notifyObservers();
