@@ -1,7 +1,7 @@
 # college
 Repository for college project
 
-1. Create schema(Database) using MySQL Community(V. 5.7.18) with name "kassensystem".
-2. Use 'forward engineer' in MySQL Workbench to recreate tables.
+1. Use deployDB.sql to recreate the Database with the name "kassensystem".
+2. bin\startApp.jar to execute the App
 
     
